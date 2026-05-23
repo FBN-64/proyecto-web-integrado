@@ -1,0 +1,30 @@
+<div class="register-wrapper">
+  <div class="register-card">
+    <h1 class="register-title">REGISTER</h1>
+
+    <div class="input-group">
+      <label>Full Name</label>
+      <input type="text" placeholder="Enter your full name">
+    </div>
+
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" placeholder="Choose a username">
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" placeholder="Create password">
+    </div>
+
+    <div class="button-group">
+      <button type="button" class="btn-secondary" routerLink="/login">
+        Login
+      </button>
+
+      <button type="submit" class="btn-primary" [routerLink]="['/dashboard']">
+        Crear usuario
+      </button>
+    </div>
+  </div>
+</div>

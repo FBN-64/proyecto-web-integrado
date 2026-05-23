@@ -1,0 +1,73 @@
+/* Contenedor principal para darle espacio y centrar todo */
+.contenido-madre-zoraida {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Títulos de cada sección */
+.contenido-madre-zoraida h2 {
+  color: #003a6c; /* El mismo azul de tu menú lateral */
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+/* Grilla para que las tarjetas se acomoden automáticamente */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Diseño de cada tarjeta (Card) */
+.card {
+  background-color: #ffffff;
+  padding: 30px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra suave */
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #003a6c;
+  border-left: 5px solid #005b9f; /* Borde lateral para darle un toque moderno */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto al pasar el mouse sobre la tarjeta */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor de los botones */
+.modulos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Diseño de los botones de acceso rápido */
+.modulos button {
+  background-color: #003a6c; /* Fondo azul marino */
+  color: #ffffff; /* Texto blanco */
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  font-weight: 500;
+}
+
+/* Efecto al pasar el mouse por los botones */
+.modulos button:hover {
+  background-color: #005b9f; /* Azul un poco más claro, como el hover de tu menú */
+}
+
+/* Efecto al hacer clic en los botones */
+.modulos button:active {
+  transform: scale(0.98);
+}

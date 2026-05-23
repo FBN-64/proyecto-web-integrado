@@ -1,0 +1,101 @@
+/* Contenedor principal para centrar la tarjeta.
+   Puse un fondo gris muy claro para que se note la tarjeta blanca. */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f4f7f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* La tarjeta blanca exacta de tu imagen */
+.login-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra muy suave */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.login-title {
+  color: #1a2238; /* Azul oscuro */
+  font-size: 32px;
+  font-weight: 800;
+  margin-top: 0;
+  margin-bottom: 35px;
+  letter-spacing: 2px;
+}
+
+/* Contenedores de los inputs */
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  color: #555555;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-left: 15px; /* Alineado con la curva interior del input */
+}
+
+/* Inputs tipo píldora */
+.input-group input {
+  width: 100%;
+  padding: 15px 20px;
+  border: none;
+  background-color: #f0f2f5;
+  border-radius: 50px;
+  font-size: 15px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+/* --- FILA DE BOTONES LADO A LADO --- */
+.button-group {
+  display: flex;
+  gap: 15px; /* Espacio exacto entre los botones */
+  margin-top: 30px;
+}
+
+.button-group button {
+  flex: 1; /* Esto obliga a que ocupen exactamente 50% cada uno */
+  padding: 15px;
+  border-radius: 50px; /* Estilo píldora */
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Botón Izquierdo: Crear Usuario (Blanco con borde) */
+.btn-secondary {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #d1d5db; /* Borde gris */
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+}
+
+/* Botón Derecho: Iniciar Sesión (Azul) */
+.btn-primary {
+  background-color: #0056b3; /* El tono de azul de tu imagen */
+  color: #ffffff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #004494;
+}

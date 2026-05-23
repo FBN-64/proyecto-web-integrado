@@ -1,0 +1,21 @@
+.table-hover tbody tr:hover {
+  background-color: #f0f4f8;
+  transition: background-color 0.2s ease;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.text-primary {
+  color: #003a6c !important;
+}
+
+.table-primary {
+  background-color: #003a6c !important;
+  color: white !important;
+}
+
+.bg-primary {
+  background-color: #003a6c !important;
+}

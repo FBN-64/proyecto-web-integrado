@@ -1,0 +1,93 @@
+<div class="container mt-4">
+  <h1 class="text-center mb-4 text-primary">👨‍⚕️ Lista de Médicos</h1>
+
+  <input
+    type="text"
+    class="form-control mb-3"
+    placeholder="🔍 Buscar médico o especialidad..."
+    [(ngModel)]="filtro"
+  />
+
+  <div class="mb-3">
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarMedicoModal">
+      ➕ Agregar Médico
+    </button>
+  </div>
+
+  <table class="table table-bordered table-hover shadow-sm bg-white">
+    <thead class="table-primary text-center">
+      <tr>
+        <th>Nombre del Médico</th>
+        <th>Especialidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let medico of medicosFiltrados">
+        <td>{{ medico.nombre }}</td>
+        <td>{{ medico.especialidad }}</td>
+        <td class="text-center">
+          <button
+            class="btn btn-danger btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#confirmModal"
+            (click)="prepararEliminar(medico)"
+          >
+            ❌
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="medicosFiltrados.length === 0">
+        <td colspan="3" class="text-center text-muted">No se encontraron médicos...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="agregarMedicoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="agregarMedico()">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Agregar Médico</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre del Médico</label>
+            <input type="text" class="form-control" name="nombre" [(ngModel)]="nuevoMedico.nombre" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Especialidad</label>
+            <select class="form-select" name="especialidad" [(ngModel)]="nuevoMedico.especialidad" required>
+              <option value="" disabled selected>Seleccione una especialidad</option>
+              <option>Cirugía de Cabeza, Cuello y Maxilofacial</option>
+              <option>Gastroenterología</option>
+              <option>Medicina Interna</option>
+              <option>Traumatología</option>
+              <option>Cardiología</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Agregar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      <div class="modal-body text-center p-4">
+        <p class="fs-5 mb-4 text-danger fw-bold">¿Está seguro de retirar al médico?</p>
+        <div class="d-flex justify-content-center gap-3">
+          <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal" (click)="confirmarEliminar()">Sí, eliminar</button>
+          <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">No, cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

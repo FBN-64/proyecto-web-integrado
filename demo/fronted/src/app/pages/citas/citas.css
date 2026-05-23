@@ -1,0 +1,32 @@
+.text-primary {
+  color: #003a6c !important;
+}
+
+.table-primary {
+  background-color: #003a6c !important;
+  color: white !important;
+}
+
+.bg-primary {
+  background-color: #003a6c !important;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f0f4f8;
+  transition: background-color 0.2s ease;
+}
+
+/* Efecto bonito para las tarjetas de resumen superior */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Grosor del borde lateral de las tarjetas */
+.border-5 {
+  border-left-width: 5px !important;
+}

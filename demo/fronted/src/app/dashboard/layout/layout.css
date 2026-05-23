@@ -1,0 +1,66 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #003366; /* El azul oscuro de tu Figma */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  padding: 25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 15px 25px;
+  color: #bdc3c7;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.sidebar-nav a:hover, .active-link {
+  background-color: #004d99;
+  color: white !important;
+  border-left: 4px solid #00d4ff;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f7f6; /* Gris muy claro para el fondo */
+}
+
+.top-bar {
+  height: 60px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.page-container {
+  padding: 30px;
+  flex: 1;
+  overflow-y: auto;
+}
