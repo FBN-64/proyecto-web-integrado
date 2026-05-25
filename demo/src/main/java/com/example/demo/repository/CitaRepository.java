@@ -1,0 +1,12 @@
+package com.example.demo.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.model.Cita;
+
+@Repository
+public interface CitaRepository extends JpaRepository<Cita, Long> {
+    
+    // Spring Boot te da gratis los métodos para guardar, buscar y eliminar citas.
+}
