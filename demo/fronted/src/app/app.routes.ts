@@ -1,9 +1,9 @@
 ﻿import { Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/Login';
+import { LoginComponent } from './auth/login/login';
 import { RegisterComponent } from './auth/register/register';
 import { LayoutComponent } from './dashboard/layout/layout';
-import { ResumenComponent } from './pages/resumen/Resumen';
-import { MedicosComponent } from './pages/medicos/Medicos';
+import { ResumenComponent } from './pages/resumen/resumen';
+import { MedicosComponent } from './pages/medicos/medicos';
 import { EspecialidadComponent } from './pages/especialidad/especialidad';
 import { HorariosComponent } from './pages/horarios/horarios';
 import { CitasComponent } from './pages/citas/citas';

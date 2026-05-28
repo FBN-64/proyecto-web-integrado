@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/especialidades")
 
-public class Especialidadcontroller {
+public class EspecialidadController {
 
     @Autowired
     private EspecialidadRepository repo;
