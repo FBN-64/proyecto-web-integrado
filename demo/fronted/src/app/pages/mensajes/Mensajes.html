@@ -1,0 +1,13 @@
+﻿<div class="page-content">
+  <div class="page-header"><div><h1>Mensajes de contacto</h1><p>Gestiona solicitudes, consultas y mensajes pendientes de respuesta.</p></div><button class="btn-primary" type="button" (click)="cargarDatos()">Actualizar</button></div>
+  <div class="summary-grid"><div class="summary-card urgent"><span>Pendientes</span><strong>{{ pendientes }}</strong></div><div class="summary-card"><span>Leidos</span><strong>{{ leidos }}</strong></div><div class="summary-card"><span>Total</span><strong>{{ mensajes.length }}</strong></div></div>
+  <div class="filters-row"><input type="search" placeholder="Buscar por nombre, email, telefono o motivo" [(ngModel)]="filtro"><select [(ngModel)]="estado"><option value="pendientes">Pendientes</option><option value="leidos">Leidos</option><option value="todos">Todos</option></select></div>
+  <div class="message-list" *ngIf="!cargando && mensajesFiltrados.length; else estadoMensajes">
+    <article class="message-card" *ngFor="let mensaje of mensajesFiltrados" [class.unread]="!mensaje.leido">
+      <header><div><h2>{{ mensaje.nombreCompleto || 'Sin nombre' }}</h2><p>{{ mensaje.motivoConsulta || 'Consulta general' }}</p></div><span [class.read]="mensaje.leido">{{ mensaje.leido ? 'Leido' : 'Pendiente' }}</span></header>
+      <p class="message-body">{{ mensaje.mensaje || 'Sin mensaje adicional.' }}</p>
+      <footer><div><strong>{{ mensaje.email || 'Sin email' }}</strong><small>{{ mensaje.telefono || 'Sin telefono' }} - {{ mensaje.fechaRecibido | date:'dd/MM/yyyy HH:mm' }}</small></div><button type="button" class="btn-secondary" *ngIf="!mensaje.leido" (click)="marcarLeido(mensaje)">Marcar leido</button></footer>
+    </article>
+  </div>
+  <ng-template #estadoMensajes><div class="empty">{{ cargando ? 'Cargando mensajes...' : 'No hay mensajes para mostrar.' }}</div></ng-template>
+</div>

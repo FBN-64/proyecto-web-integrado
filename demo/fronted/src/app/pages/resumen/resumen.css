@@ -1,73 +1,43 @@
-/* Contenedor principal para darle espacio y centrar todo */
-.contenido-madre-zoraida {
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-}
-
-/* Títulos de cada sección */
-.contenido-madre-zoraida h2 {
-  color: #003a6c; /* El mismo azul de tu menú lateral */
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 10px;
-}
-
-/* Grilla para que las tarjetas se acomoden automáticamente */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-/* Diseño de cada tarjeta (Card) */
-.card {
-  background-color: #ffffff;
-  padding: 30px 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra suave */
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #003a6c;
-  border-left: 5px solid #005b9f; /* Borde lateral para darle un toque moderno */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Efecto al pasar el mouse sobre la tarjeta */
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Contenedor de los botones */
-.modulos {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-/* Diseño de los botones de acceso rápido */
-.modulos button {
-  background-color: #003a6c; /* Fondo azul marino */
-  color: #ffffff; /* Texto blanco */
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease;
-  font-weight: 500;
-}
-
-/* Efecto al pasar el mouse por los botones */
-.modulos button:hover {
-  background-color: #005b9f; /* Azul un poco más claro, como el hover de tu menú */
-}
-
-/* Efecto al hacer clic en los botones */
-.modulos button:active {
-  transform: scale(0.98);
-}
+﻿.resumen-page { max-width: 1380px; color: #0f172a; }
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+.eyebrow { margin: 0 0 6px; color: #2563eb; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; }
+.page-header h1 { font-size: 1.85rem; font-weight: 800; margin: 0 0 6px; }
+.page-header p { color: #64748b; margin: 0; font-size: 0.95rem; }
+.refresh-btn { border: 0; border-radius: 8px; background: #0f172a; color: white; padding: 11px 16px; font-weight: 700; cursor: pointer; }
+.state-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; color: #64748b; margin-bottom: 18px; }
+.state-card.error { color: #b91c1c; background: #fef2f2; border-color: #fecaca; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+.stat-card { background: white; color: inherit; text-decoration: none; border: 1px solid #e2e8f0; border-left: 5px solid #2563eb; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05); }
+.stat-card strong { font-size: 1.75rem; line-height: 1; }
+.stat-card small, .stat-card span { color: #64748b; font-size: 0.82rem; }
+.accent-green { border-left-color: #16a34a; } .accent-purple { border-left-color: #7c3aed; } .accent-red { border-left-color: #dc2626; }
+.insight-grid, .content-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 16px; margin-bottom: 16px; }
+.bottom-grid { grid-template-columns: 1fr 1fr; }
+.panel { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05); }
+.panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.panel-header h2 { margin: 0 0 4px; font-size: 1rem; font-weight: 800; }
+.panel-header p { margin: 0; color: #64748b; font-size: 0.82rem; }
+.panel-header a { color: #2563eb; font-size: 0.82rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+.status-list { display: grid; gap: 14px; }
+.status-row { display: grid; grid-template-columns: 120px 48px 1fr; align-items: center; gap: 12px; font-size: 0.88rem; }
+.status-row strong { text-align: right; }
+.bar { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: #16a34a; border-radius: inherit; }
+.bar.warning i { background: #f59e0b; } .bar.danger i { background: #dc2626; }
+.mini-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.mini-metrics div { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 13px; }
+.mini-metrics span, .rank-item small, .activity-item span, .activity-item small { display: block; color: #64748b; font-size: 0.78rem; }
+.mini-metrics strong { display: block; margin-top: 4px; font-size: 1.12rem; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; color: #64748b; font-size: 0.75rem; text-transform: uppercase; padding: 10px 8px; border-bottom: 1px solid #e2e8f0; }
+td { padding: 12px 8px; border-bottom: 1px solid #f1f5f9; font-size: 0.86rem; }
+.pill { display: inline-flex; border-radius: 999px; padding: 4px 9px; background: #eff6ff; color: #1d4ed8; font-weight: 800; font-size: 0.72rem; text-transform: capitalize; }
+.rank-list, .activity-list { display: grid; gap: 10px; }
+.rank-item, .activity-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0; }
+.rank-item { justify-content: flex-start; }
+.rank-item > span { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #dbeafe; color: #1d4ed8; font-weight: 800; }
+.activity-item.unread { border-color: #fecaca; background: #fff7ed; }
+.empty { border: 1px dashed #cbd5e1; border-radius: 8px; padding: 24px; color: #64748b; text-align: center; }
+@media (max-width: 1100px) { .stats-grid, .insight-grid, .content-grid, .bottom-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .page-header, .panel-header { flex-direction: column; } .stats-grid, .insight-grid, .content-grid, .bottom-grid, .mini-metrics { grid-template-columns: 1fr; } .status-row { grid-template-columns: 1fr 40px; } .status-row .bar { grid-column: 1 / -1; } }

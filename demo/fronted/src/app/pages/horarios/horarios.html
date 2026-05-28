@@ -1,96 +1,108 @@
-<div class="container mt-4">
-  <h1 class="text-center mb-4 text-primary">⌚ Horarios de las Especialidades</h1>
-
-  <div class="text-center mb-4">
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregarMedico">
-      ➕ Agregar médico al horario
+<div class="page-content">
+  <div class="page-header">
+    <div>
+      <h1>🕐 Horarios</h1>
+      <p>Gestiona los horarios de los doctores</p>
+    </div>
+    <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#modalHorario" (click)="prepararNuevo()">
+      + Agregar Horario
     </button>
   </div>
 
-  <div class="table-responsive shadow-sm">
-    <table class="table table-bordered table-hover bg-white mb-0">
-      <thead class="table-primary text-center">
+  <!-- Filtro por doctor -->
+  <div class="search-bar">
+    <select [(ngModel)]="doctorSeleccionado" (change)="filtrarPorDoctor()">
+      <option [ngValue]="null">Todos los doctores</option>
+      <option *ngFor="let d of doctores" [ngValue]="d">{{ d.nombre }} {{ d.apellido }}</option>
+    </select>
+  </div>
+
+  <div class="table-card">
+    <table class="data-table">
+      <thead>
         <tr>
-          <th colspan="2" class="align-middle">Especialidad</th>
-          <th *ngFor="let dia of dias" class="align-middle">{{ dia }}</th>
+          <th>Doctor</th>
+          <th>Especialidad</th>
+          <th>Día</th>
+          <th>Hora Inicio</th>
+          <th>Hora Fin</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let esp of especialidades">
-          
-          <tr>
-            <td rowspan="2" class="fw-bold align-middle text-center">{{ esp }}</td>
-            <td class="text-center align-middle fw-bold text-secondary bg-light">M</td>
-            <td *ngFor="let dia of dias" class="turno-cell text-center align-middle">
-              {{ asignaciones[esp]['M'][dia].join(', ') }}
-            </td>
-          </tr>
-
-          <tr>
-            <td class="text-center align-middle fw-bold text-secondary bg-light">T</td>
-            <td *ngFor="let dia of dias" class="turno-cell text-center align-middle">
-              {{ asignaciones[esp]['T'][dia].join(', ') }}
-            </td>
-          </tr>
-
-        </ng-container>
+        <tr *ngFor="let h of horariosMostrados">
+          <td>{{ h.doctor?.nombre }} {{ h.doctor?.apellido }}</td>
+          <td><span class="badge-blue">{{ h.doctor?.especialidad?.nombre }}</span></td>
+          <td><span class="badge-gray">{{ h.diaSemana }}</span></td>
+          <td>{{ h.horaInicio }}</td>
+          <td>{{ h.horaFin }}</td>
+          <td class="actions">
+            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(h)">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="horariosMostrados.length === 0">
+          <td colspan="6" class="empty">No hay horarios registrados</td>
+        </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<div class="modal fade" id="modalAgregarMedico" tabindex="-1" aria-hidden="true">
+<!-- Modal Agregar Horario -->
+<div class="modal fade" id="modalHorario" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <form (ngSubmit)="agregarMedico()">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title">Agregar Médico al Horario</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Médico</label>
-            <select class="form-select" name="medico" [(ngModel)]="nuevoHorario.medico" required>
-              <option value="" disabled selected>Seleccione un médico</option>
-              <option *ngFor="let med of medicos" [value]="med">{{ med }}</option>
+    <div class="modal-content modal-custom">
+      <div class="modal-header-custom">
+        <h5>Agregar Horario</h5>
+        <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
+      </div>
+      <div class="modal-body-custom">
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Doctor *</label>
+            <select [(ngModel)]="form.doctor">
+              <option [ngValue]="null" disabled>Seleccione un doctor...</option>
+              <option *ngFor="let d of doctores" [ngValue]="d">{{ d.nombre }} {{ d.apellido }}</option>
             </select>
           </div>
-          
-          <div class="mb-3">
-            <label class="form-label">Especialidad</label>
-            <select class="form-select" name="especialidad" [(ngModel)]="nuevoHorario.especialidad" required>
-              <option value="" disabled selected>Seleccione una especialidad</option>
-              <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
-            </select>
-          </div>
-          
-          <div class="mb-3">
-            <label class="form-label">Día</label>
-            <select class="form-select" name="dia" [(ngModel)]="nuevoHorario.dia" required>
-              <option value="" disabled selected>Seleccione un día</option>
+          <div class="form-group full-width">
+            <label>Día de la semana *</label>
+            <select [(ngModel)]="form.diaSemana">
+              <option value="" disabled>Seleccione un día...</option>
               <option *ngFor="let dia of dias" [value]="dia">{{ dia }}</option>
             </select>
           </div>
-          
-          <div class="mb-3">
-            <label class="form-label d-block">Turno</label>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="turno" value="M" [(ngModel)]="nuevoHorario.turno" required id="turnoM">
-              <label class="form-check-label" for="turnoM">Mañana</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="turno" value="T" [(ngModel)]="nuevoHorario.turno" required id="turnoT">
-              <label class="form-check-label" for="turnoT">Tarde</label>
-            </div>
+          <div class="form-group">
+            <label>Hora Inicio *</label>
+            <input type="time" [(ngModel)]="form.horaInicio" />
+          </div>
+          <div class="form-group">
+            <label>Hora Fin *</label>
+            <input type="time" [(ngModel)]="form.horaFin" />
           </div>
         </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+      <div class="modal-footer-custom">
+        <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Confirmar -->
+<div class="modal fade" id="modalConfirm" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-custom">
+      <div class="modal-body-custom text-center p-4">
+        <div style="font-size:3rem;margin-bottom:12px">⚠️</div>
+        <h5 style="color:#dc2626;font-weight:700">¿Eliminar horario?</h5>
+        <p style="color:#64748b;margin:8px 0 24px">Esta acción no se puede deshacer.</p>
+        <div style="display:flex;gap:12px;justify-content:center">
+          <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn-delete-confirm" data-bs-dismiss="modal" (click)="confirmarEliminar()">Sí, eliminar</button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

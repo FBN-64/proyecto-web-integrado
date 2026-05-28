@@ -1,89 +1,39 @@
-<div class="dashboard-container">
+﻿<div class="dashboard-container">
 
   <aside class="sidebar">
-
     <div class="sidebar-header">
-
-      <img src="assets/logo.png" alt="Logo" class="logo"> <span>Sistema Médico</span>
-
+      <div class="logo-icon">+</div>
+      <div>
+        <div class="logo-name">Madre Zoraida</div>
+        <div class="logo-sub">Sistema Medico</div>
+      </div>
     </div>
-
-
 
     <nav class="sidebar-nav">
-
-      <a routerLink="resumen" routerLinkActive="active-link">
-
-        <i class="icon-home"></i> Resumen
-
-      </a>
-
-      <a routerLink="medicos" routerLinkActive="active-link">
-
-        <i class="icon-user"></i> Médicos
-
-      </a>
-
-      <a routerLink="especialidad" routerLinkActive="active-link">
-
-        <i class="icon-briefcase"></i> Especialidad
-
-      </a>
-
-      <a routerLink="horarios" routerLinkActive="active-link">
-
-        <i class="icon-clock"></i> Horarios
-
-      </a>
-
-      <a routerLink="citas" routerLinkActive="active-link">
-
-        <i class="icon-calendar"></i> Citas
-
-      </a>
-
-      <a routerLink="configuracion" routerLinkActive="active-link">
-
-        <i class="icon-settings"></i> Configuración
-
-      </a>
-
+      <a routerLink="resumen" routerLinkActive="active-link"><span class="nav-icon">▦</span> Resumen</a>
+      <a routerLink="medicos" routerLinkActive="active-link"><span class="nav-icon">MD</span> Medicos</a>
+      <a routerLink="especialidad" routerLinkActive="active-link"><span class="nav-icon">ES</span> Especialidades</a>
+      <a routerLink="horarios" routerLinkActive="active-link"><span class="nav-icon">HR</span> Horarios</a>
+      <a routerLink="citas" routerLinkActive="active-link"><span class="nav-icon">CT</span> Citas</a>
+      <a routerLink="pacientes" routerLinkActive="active-link"><span class="nav-icon">PC</span> Pacientes</a>
+      <a routerLink="pagos" routerLinkActive="active-link"><span class="nav-icon">S/</span> Pagos</a>
+      <a routerLink="mensajes" routerLinkActive="active-link"><span class="nav-icon">MS</span> Mensajes</a>
+      <a routerLink="configuracion" routerLinkActive="active-link"><span class="nav-icon">⚙</span> Configuracion</a>
     </nav>
 
-
-
     <div class="sidebar-footer">
-
-      <a routerLink="/login" class="logout-btn">Cerrar Sesión</a>
-
+      <button type="button" class="logout-btn" (click)="cerrarSesion()"><span>←</span> Cerrar Sesion</button>
     </div>
-
   </aside>
 
-
-
   <main class="main-content">
-
     <header class="top-bar">
-
-      <h1>Panel de Control</h1>
-
-      <div class="user-info">
-
-        <span>user-info</span>
-
-      </div>
-
+      <div class="top-bar-left"><h2 class="page-title">Panel de Control</h2></div>
+      <div class="top-bar-right"><div class="user-avatar">AD</div><div class="user-info"><span class="user-name">Administrador</span><span class="user-role">Admin</span></div></div>
     </header>
 
-
-
-    <section class="page-container">
-
-      <router-outlet></router-outlet>
-
-    </section>
-
+    <section class="page-container"><router-outlet></router-outlet></section>
   </main>
 
 </div>
+

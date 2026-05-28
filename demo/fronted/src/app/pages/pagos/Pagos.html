@@ -1,0 +1,9 @@
+﻿<div class="page-content">
+  <div class="page-header"><div><h1>Pagos</h1><p>Control de ingresos, metodos de pago y citas asociadas.</p></div><button class="btn-primary" type="button" (click)="cargarDatos()">Actualizar</button></div>
+  <div class="summary-grid"><div class="summary-card"><span>Ingresos filtrados</span><strong>S/ {{ totalIngresos | number:'1.2-2' }}</strong></div><div class="summary-card"><span>Pagos</span><strong>{{ totalPagos }}</strong></div><div class="summary-card"><span>Promedio</span><strong>S/ {{ promedioPago | number:'1.2-2' }}</strong></div></div>
+  <div class="filters-row"><input type="search" placeholder="Buscar por paciente, doctor o referencia" [(ngModel)]="filtro"><select [(ngModel)]="metodo"><option value="">Todos los metodos</option><option *ngFor="let item of metodos" [value]="item">{{ item }}</option></select></div>
+  <div class="table-card">
+    <table class="data-table" *ngIf="!cargando && pagosFiltrados.length; else estadoPagos"><thead><tr><th>ID</th><th>Fecha</th><th>Paciente</th><th>Doctor</th><th>Metodo</th><th>Referencia</th><th>Monto</th></tr></thead><tbody><tr *ngFor="let pago of pagosFiltrados"><td>#{{ pago.idPago }}</td><td>{{ pago.fechaPago | date:'dd/MM/yyyy HH:mm' }}</td><td>{{ nombrePaciente(pago) }}</td><td>{{ nombreDoctor(pago) }}</td><td><span class="badge-blue">{{ pago.metodoPago || 'Sin metodo' }}</span></td><td>{{ pago.referencia || '-' }}</td><td><strong>S/ {{ pago.monto | number:'1.2-2' }}</strong></td></tr></tbody></table>
+    <ng-template #estadoPagos><div class="empty">{{ cargando ? 'Cargando pagos...' : 'No hay pagos para mostrar.' }}</div></ng-template>
+  </div>
+</div>

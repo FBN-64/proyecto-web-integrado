@@ -1,11 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -15,11 +10,15 @@ public class Especialidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_especialidad")
+    private Integer idEspecialidad;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 255)
     private String nombre;
 
     @Column(length = 255)
     private String descripcion;
+
+    @Column(name = "url_icono", length = 255)
+    private String urlIcono;
 }

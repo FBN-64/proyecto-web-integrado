@@ -1,39 +1,64 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.model.Cita;
 import com.example.demo.repository.CitaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/citas")
-@CrossOrigin(origins = "http://localhost:4200") // Permite la conexión con tu frontend
+
 public class CitaController {
 
     @Autowired
-    private CitaRepository citaRepository;
+    private CitaRepository repo;
 
-    // Método para LISTAR todas las citas
     @GetMapping
-    public List<Cita> listarTodas() {
-        return citaRepository.findAll();
+    public List<Cita> listar() {
+        return repo.findAll();
     }
 
-    // Método para CREAR una nueva cita
+    @GetMapping("/{id}")
+    public ResponseEntity<Cita> obtener(@PathVariable Integer id) {
+        return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/paciente/{idPaciente}")
+    public List<Cita> porPaciente(@PathVariable Integer idPaciente) {
+        return repo.findByPaciente_IdPaciente(idPaciente);
+    }
+
+    @GetMapping("/doctor/{idDoctor}")
+    public List<Cita> porDoctor(@PathVariable Integer idDoctor) {
+        return repo.findByDoctor_IdDoctor(idDoctor);
+    }
+
     @PostMapping
-    public Cita crearCita(@RequestBody Cita cita) {
-        // Por defecto, toda cita nueva empieza en estado "Pendiente"
-        if (cita.getEstado() == null || cita.getEstado().isEmpty()) {
-            cita.setEstado("Pendiente");
-        }
-        return citaRepository.save(cita);
+    public Cita crear(@RequestBody Cita c) {
+        if (c.getEstado() == null || c.getEstado().isEmpty())
+            c.setEstado("confirmada");
+        return repo.save(c);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cita> actualizar(@PathVariable Integer id, @RequestBody Cita datos) {
+        return repo.findById(id).map(c -> {
+            c.setPaciente(datos.getPaciente());
+            c.setDoctor(datos.getDoctor());
+            c.setFechaCita(datos.getFechaCita());
+            c.setHoraInicio(datos.getHoraInicio());
+            c.setEstado(datos.getEstado());
+            return ResponseEntity.ok(repo.save(c));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+        if (!repo.existsById(id))
+            return ResponseEntity.notFound().build();
+        repo.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
