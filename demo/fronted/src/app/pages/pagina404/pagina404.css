@@ -1,0 +1,76 @@
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f7f9; /* Un gris azulado muy suave de fondo */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.error-content {
+  text-align: center;
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); /* Sombra elegante */
+  max-width: 450px;
+  width: 100%;
+}
+
+.error-code {
+  font-size: 90px;
+  font-weight: 800;
+  color: #2c3e50; /* Azul oscuro corporativo */
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.error-icon {
+  font-size: 45px;
+  margin: 15px 0;
+}
+
+.error-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #34495e;
+  margin: 0 0 15px 0;
+}
+
+.error-message {
+  font-size: 15px;
+  color: #7f8c8d;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.btn-return {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0066cc; /* Azul médico/tecnológico */
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-return:hover {
+  background-color: #0052a3; /* Azul más oscuro al pasar el mouse */
+}
+
+.btn-return:active {
+  transform: translateY(2px); /* Pequeño efecto al hacer clic */
+}
+
+.btn-return span {
+  margin-right: 8px;
+  font-size: 18px;
+}

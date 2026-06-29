@@ -12,6 +12,7 @@ import { PagosComponent } from './pages/pagos/Pagos';
 import { MensajesComponent } from './pages/mensajes/Mensajes';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion';
 import { authGuard } from './guards/auth.guard';
+import { Pagina404 } from './pages/pagina404/pagina404';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -34,6 +35,6 @@ export const routes: Routes = [
       { path: 'configuracion', component: ConfiguracionComponent }
     ]
   },
-  { path: '**', redirectTo: 'login' }
-];
+  { path: '**', component: Pagina404 }
+]
 
