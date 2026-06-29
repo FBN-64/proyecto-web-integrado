@@ -13,6 +13,8 @@ import { MensajesComponent } from './pages/mensajes/Mensajes';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion';
 import { authGuard } from './guards/auth.guard';
 import { Pagina404 } from './pages/pagina404/pagina404';
+import { Perfil } from './pages/configuracion/perfil/perfil';
+import { Seguridad } from './pages/configuracion/seguridad/seguridad';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -32,7 +34,15 @@ export const routes: Routes = [
       { path: 'pacientes', component: PacientesComponent },
       { path: 'pagos', component: PagosComponent },
       { path: 'mensajes', component: MensajesComponent },
-      { path: 'configuracion', component: ConfiguracionComponent }
+      {
+        path: 'configuracion',
+        component: ConfiguracionComponent,
+        children: [
+          { path: '', redirectTo: 'perfil', pathMatch: 'full' },
+          { path: 'perfil', component: Perfil },
+          { path: 'seguridad', component: Seguridad }
+        ]
+      }
     ]
   },
   { path: '**', component: Pagina404 }
