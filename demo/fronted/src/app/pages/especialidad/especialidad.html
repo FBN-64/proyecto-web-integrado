@@ -5,7 +5,7 @@
     type="text"
     class="form-control mb-3"
     placeholder="🔍 Buscar especialidad..."
-    [(ngModel)]="filtro"
+    (input)="actualizarFiltro($event)"
   />
 
   <div class="mb-3">
@@ -45,20 +45,25 @@
 <div class="modal fade" id="agregarEspecialidadModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form (ngSubmit)="agregarEspecialidad()">
+      <form [formGroup]="especialidadForm" (ngSubmit)="agregarEspecialidad()">
         <div class="modal-header bg-primary text-white">
           <h5 class="modal-title">Agregar Especialidad</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label">Nombre de la Especialidad</label>
-            <input type="text" class="form-control" name="nombre" [(ngModel)]="nuevaEspecialidad" required placeholder="Ej. Dermatología" />
+            <label class="form-label">Nombre de la Especialidad *</label>
+            <input type="text" class="form-control" formControlName="nombre" placeholder="Ej. Dermatología" />
+            <small class="text-danger mt-1 d-block" *ngIf="especialidadForm.get('nombre')?.invalid && especialidadForm.get('nombre')?.touched">
+              El nombre es obligatorio y debe tener mínimo 3 caracteres.
+            </small>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Agregar</button>
+          <button type="submit" class="btn btn-success" [disabled]="!especialidadForm.valid" [attr.data-bs-dismiss]="especialidadForm.valid ? 'modal' : null">
+            Agregar
+          </button>
         </div>
       </form>
     </div>

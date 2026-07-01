@@ -1,23 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-especialidad',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Importante para *ngFor y [(ngModel)]
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './especialidad.html',
   styleUrls: ['./especialidad.css']
 })
 export class EspecialidadComponent {
-  // Conectado al buscador
   filtro: string = '';
-  
-  // Para agregar y eliminar
-  nuevaEspecialidad: string = '';
   especialidadAEliminar: any = null;
+  especialidadForm: FormGroup;
 
-  // Tu lista de especialidades
   especialidades = [
     { nombre: 'Cirugía de Cabeza, Cuello y Maxilofacial' },
     { nombre: 'Gastroenterología' },
@@ -45,28 +41,28 @@ export class EspecialidadComponent {
     { nombre: 'Cirugía Oncológica' },
     { nombre: 'Medicina Física' }
   ];
-
-  // Filtra la lista en tiempo real
-  get especialidadesFiltradas() {
-    return this.especialidades.filter(e =>
-      e.nombre.toLowerCase().includes(this.filtro.toLowerCase())
-    );
+  constructor(private fb: FormBuilder) {
+    this.especialidadForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]]
+    });
   }
 
-  // Agrega una nueva a la lista
+  actualizarFiltro(event: any) { this.filtro = event.target.value; }
+
+  get especialidadesFiltradas() {
+    return this.especialidades.filter(e => e.nombre.toLowerCase().includes(this.filtro.toLowerCase()));
+  }
+
   agregarEspecialidad() {
-    if (this.nuevaEspecialidad.trim()) {
-      this.especialidades.push({ nombre: this.nuevaEspecialidad.trim() });
-      this.nuevaEspecialidad = ''; // Limpia el input
+    if (this.especialidadForm.valid) {
+      const nom = this.especialidadForm.get('nombre')?.value;
+      this.especialidades.push({ nombre: nom.trim() });
+      this.especialidadForm.reset();
     }
   }
 
-  // Prepara la eliminación
-  prepararEliminar(especialidad: any) {
-    this.especialidadAEliminar = especialidad;
-  }
+  prepararEliminar(especialidad: any) { this.especialidadAEliminar = especialidad; }
 
-  // Elimina definitivamente
   confirmarEliminar() {
     if (this.especialidadAEliminar) {
       this.especialidades = this.especialidades.filter(e => e !== this.especialidadAEliminar);
