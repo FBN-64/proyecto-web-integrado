@@ -11,7 +11,7 @@
   </div>
 
   <div class="search-bar">
-    <input type="text" placeholder="🔍 Buscar paciente o doctor..." [(ngModel)]="filtro" />
+    <input type="text" placeholder="🔍 Buscar paciente o doctor..." (input)="actualizarFiltro($event)" />
   </div>
 
   <div class="table-card">
@@ -57,33 +57,37 @@
         <h5>Nueva Cita</h5>
         <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
       </div>
-      <div class="modal-body-custom">
+      <div class="modal-body-custom" [formGroup]="citaForm">
         <div class="form-grid">
           <div class="form-group">
             <label>Paciente *</label>
-            <select [(ngModel)]="form.paciente">
+            <select formControlName="paciente">
               <option [ngValue]="null" disabled>Seleccione...</option>
               <option *ngFor="let p of pacientes" [ngValue]="p">{{ p.nombre }} {{ p.apellido }}</option>
             </select>
+            <small class="alert" *ngIf="citaForm.get('paciente')?.invalid && citaForm.get('paciente')?.touched" style="color:#dc2626;">Requerido</small>
           </div>
           <div class="form-group">
             <label>Doctor *</label>
-            <select [(ngModel)]="form.doctor">
+            <select formControlName="doctor">
               <option [ngValue]="null" disabled>Seleccione...</option>
               <option *ngFor="let d of doctores" [ngValue]="d">{{ d.nombre }} {{ d.apellido }}</option>
             </select>
+            <small class="alert" *ngIf="citaForm.get('doctor')?.invalid && citaForm.get('doctor')?.touched" style="color:#dc2626;">Requerido</small>
           </div>
           <div class="form-group">
             <label>Fecha *</label>
-            <input type="date" [(ngModel)]="form.fechaCita" />
+            <input type="date" formControlName="fechaCita" />
+            <small class="alert" *ngIf="citaForm.get('fechaCita')?.invalid && citaForm.get('fechaCita')?.touched" style="color:#dc2626;">Requerido</small>
           </div>
           <div class="form-group">
             <label>Hora *</label>
-            <input type="time" [(ngModel)]="form.horaInicio" />
+            <input type="time" formControlName="horaInicio" />
+            <small class="alert" *ngIf="citaForm.get('horaInicio')?.invalid && citaForm.get('horaInicio')?.touched" style="color:#dc2626;">Requerido</small>
           </div>
           <div class="form-group full-width">
             <label>Estado</label>
-            <select [(ngModel)]="form.estado">
+            <select formControlName="estado">
               <option value="confirmada">Confirmada</option>
               <option value="pendiente">Pendiente</option>
               <option value="cancelada">Cancelada</option>
@@ -93,7 +97,7 @@
       </div>
       <div class="modal-footer-custom">
         <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()">Guardar</button>
+        <button class="btn-save" [disabled]="!citaForm.valid" [attr.data-bs-dismiss]="citaForm.valid ? 'modal' : null" (click)="guardar()" [ngStyle]="{'opacity': citaForm.valid ? '1' : '0.5'}">Guardar</button>
       </div>
     </div>
   </div>
