@@ -1,101 +1,202 @@
-/* Contenedor principal para centrar la tarjeta.
-   Puse un fondo gris muy claro para que se note la tarjeta blanca. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 .login-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: #f4f7f6;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  position: fixed;
-  top: 0;
-  left: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* La tarjeta blanca exacta de tu imagen */
-.login-card {
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 400px;
-  padding: 40px 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra muy suave */
-  text-align: center;
-  box-sizing: border-box;
+/* Panel izquierdo azul */
+.login-left {
+  flex: 1;
+  background: linear-gradient(145deg, #003366 0%, #005cbf 60%, #0077e6 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px;
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
 
-.login-title {
-  color: #1a2238; /* Azul oscuro */
-  font-size: 32px;
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+
+.login-left::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: -60px;
+  width: 350px; height: 350px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+
+.brand { margin-bottom: 24px; }
+
+.brand-icon {
+  font-size: 48px;
+  width: 72px; height: 72px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.brand h1 {
+  font-size: 2.4rem;
   font-weight: 800;
-  margin-top: 0;
-  margin-bottom: 35px;
-  letter-spacing: 2px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
 }
 
-/* Contenedores de los inputs */
+.brand h1 span { color: #7dd3fc; }
+
+.brand-tagline {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 48px;
+  font-weight: 300;
+}
+
+.stats {
+  display: flex;
+  gap: 40px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat strong {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #7dd3fc;
+}
+
+.stat span {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Panel derecho blanco */
+.login-right {
+  width: 480px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.login-card {
+  width: 100%;
+  background: white;
+  border-radius: 24px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.login-card h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 36px;
+}
+
 .input-group {
-  text-align: left;
   margin-bottom: 20px;
 }
 
 .input-group label {
   display: block;
-  color: #555555;
-  font-size: 14px;
+  font-size: 0.85rem;
   font-weight: 600;
+  color: #374151;
   margin-bottom: 8px;
-  margin-left: 15px; /* Alineado con la curva interior del input */
 }
 
-/* Inputs tipo píldora */
 .input-group input {
   width: 100%;
-  padding: 15px 20px;
-  border: none;
-  background-color: #f0f2f5;
-  border-radius: 50px;
-  font-size: 15px;
-  box-sizing: border-box;
+  padding: 14px 18px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
   outline: none;
+  transition: border-color 0.2s;
+  background: #f8fafc;
 }
 
-/* --- FILA DE BOTONES LADO A LADO --- */
-.button-group {
-  display: flex;
-  gap: 15px; /* Espacio exacto entre los botones */
-  margin-top: 30px;
+.input-group input:focus {
+  border-color: #005cbf;
+  background: white;
 }
 
-.button-group button {
-  flex: 1; /* Esto obliga a que ocupen exactamente 50% cada uno */
+.btn-login {
+  width: 100%;
   padding: 15px;
-  border-radius: 50px; /* Estilo píldora */
-  font-size: 14px;
+  background: linear-gradient(135deg, #003366, #005cbf);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s;
+  margin-top: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
 }
 
-/* Botón Izquierdo: Crear Usuario (Blanco con borde) */
-.btn-secondary {
-  background-color: #ffffff;
-  color: #333333;
-  border: 1px solid #d1d5db; /* Borde gris */
+.btn-login:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 92, 191, 0.35);
 }
 
-.btn-secondary:hover {
-  background-color: #f9fafb;
+.register-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.875rem;
+  color: #64748b;
 }
 
-/* Botón Derecho: Iniciar Sesión (Azul) */
-.btn-primary {
-  background-color: #0056b3; /* El tono de azul de tu imagen */
-  color: #ffffff;
-  border: none;
+.register-link a {
+  color: #005cbf;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.btn-primary:hover {
-  background-color: #004494;
+.error-msg {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
+.hint {
+  text-align: center;
+  margin-top: 16px;
+  color: #94a3b8;
+  font-size: 0.8rem;
 }

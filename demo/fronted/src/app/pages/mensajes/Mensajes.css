@@ -1,0 +1,21 @@
+﻿.summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+.summary-card { background: white; border: 1px solid #e2e8f0; border-left: 5px solid #2563eb; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05); }
+.summary-card.urgent { border-left-color: #dc2626; }
+.summary-card span { display: block; color: #64748b; font-size: 0.82rem; margin-bottom: 8px; }
+.summary-card strong { font-size: 1.45rem; color: #0f172a; }
+.filters-row { display: flex; gap: 12px; margin-bottom: 16px; }
+.filters-row input, .filters-row select { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 11px 13px; font: inherit; outline: none; background: white; }
+.filters-row input { min-width: 280px; flex: 1; }
+.message-list { display: grid; gap: 12px; }
+.message-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05); }
+.message-card.unread { border-color: #fecaca; background: #fff7ed; }
+.message-card header, .message-card footer { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.message-card h2 { margin: 0 0 4px; font-size: 1rem; color: #0f172a; }
+.message-card p { margin: 0; color: #64748b; font-size: 0.86rem; }
+.message-card header span { border-radius: 999px; padding: 4px 10px; background: #fee2e2; color: #b91c1c; font-size: 0.72rem; font-weight: 800; }
+.message-card header span.read { background: #dcfce7; color: #15803d; }
+.message-body { margin: 14px 0 !important; color: #334155 !important; }
+.message-card footer strong, .message-card footer small { display: block; }
+.message-card footer small { color: #64748b; margin-top: 3px; }
+.btn-secondary { border: 1px solid #cbd5e1; background: white; border-radius: 8px; padding: 9px 12px; cursor: pointer; font-weight: 700; color: #0f172a; }
+@media (max-width: 780px) { .summary-grid, .filters-row { grid-template-columns: 1fr; display: grid; } .filters-row input { min-width: 0; } .message-card header, .message-card footer { flex-direction: column; } }

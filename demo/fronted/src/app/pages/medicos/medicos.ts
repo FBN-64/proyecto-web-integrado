@@ -1,57 +1,58 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../../services/api.services';
 
 @Component({
   selector: 'app-medicos',
   standalone: true,
-  imports: [CommonModule, FormsModule], // ¡Súper importantes para la tabla y el buscador!
-  templateUrl: './medicos.html',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './Medicos.html',
   styleUrls: ['./medicos.css']
 })
-export class MedicosComponent {
-  // Variable conectada al buscador
-  filtro: string = '';
-  
-  // Variables para el nuevo médico y el que se va a eliminar
-  nuevoMedico = { nombre: '', especialidad: '' };
-  medicoAEliminar: any = null;
+export class MedicosComponent implements OnInit {
+  medicos: any[] = [];
+  especialidades: any[] = [];
+  filtro = '';
+  editando = false;
+  medicoSeleccionado: any = null;
+  form = { nombre: '', apellido: '', dni: '', especialidad: null as any, telefono: '', email: '', descripcionCorta: '' };
 
-  // Tu lista de médicos (puse los primeros, puedes agregar el resto siguiendo este formato)
-  medicos = [
-    { nombre: 'Alcántara Diaz Manuel', especialidad: 'Cirugía de Cabeza Cuello y Maxilo facial' },
-    { nombre: 'Aliaga Ramos Josue', especialidad: 'Gastroenterología' },
-    { nombre: 'Asmat Ramírez Victor Arturo', especialidad: 'Medicina Interna' },
-    { nombre: 'Basombrío Velasquez Jorge', especialidad: 'Traumatología' },
-    { nombre: 'Bello Sedano Alexis Gustavo', especialidad: 'Cardiología' }
-  ];
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
 
-  // El superpoder de Angular: Filtra la tabla automáticamente mientras escribes
+  ngOnInit() {
+    this.cargarDatos();
+    this.api.getEspecialidades().subscribe(e => { this.especialidades = e; this.cdr.detectChanges(); });
+  }
+
+  cargarDatos() {
+    this.api.getDoctores().subscribe(d => { this.medicos = d; this.cdr.detectChanges(); });
+  }
+
   get medicosFiltrados() {
+    const f = this.filtro.toLowerCase();
     return this.medicos.filter(m =>
-      m.nombre.toLowerCase().includes(this.filtro.toLowerCase()) ||
-      m.especialidad.toLowerCase().includes(this.filtro.toLowerCase())
+      m.nombre?.toLowerCase().includes(f) ||
+      m.apellido?.toLowerCase().includes(f) ||
+      m.especialidad?.nombre?.toLowerCase().includes(f)
     );
   }
 
-  // Función para guardar el nuevo médico
-  agregarMedico() {
-    if (this.nuevoMedico.nombre && this.nuevoMedico.especialidad) {
-      this.medicos.push({ ...this.nuevoMedico });
-      this.nuevoMedico = { nombre: '', especialidad: '' }; // Limpiamos el formulario
+  prepararNuevo() { this.editando = false; this.form = { nombre: '', apellido: '', dni: '', especialidad: null, telefono: '', email: '', descripcionCorta: '' }; }
+  prepararEditar(m: any) { this.editando = true; this.medicoSeleccionado = m; this.form = { ...m }; }
+  prepararEliminar(m: any) { this.medicoSeleccionado = m; }
+
+  guardar() {
+    if (this.editando && this.medicoSeleccionado) {
+      this.api.updateDoctor(this.medicoSeleccionado.idDoctor, this.form).subscribe(() => this.cargarDatos());
+    } else {
+      this.api.createDoctor(this.form).subscribe(() => this.cargarDatos());
     }
   }
 
-  // Prepara el médico que seleccionaste para borrar
-  prepararEliminar(medico: any) {
-    this.medicoAEliminar = medico;
-  }
-
-  // Confirma y borra
   confirmarEliminar() {
-    if (this.medicoAEliminar) {
-      this.medicos = this.medicos.filter(m => m !== this.medicoAEliminar);
-      this.medicoAEliminar = null;
+    if (this.medicoSeleccionado) {
+      this.api.deleteDoctor(this.medicoSeleccionado.idDoctor).subscribe(() => this.cargarDatos());
     }
   }
 }
