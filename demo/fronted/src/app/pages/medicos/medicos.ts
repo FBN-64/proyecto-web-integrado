@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api.services';
 
 @Component({
   selector: 'app-medicos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './Medicos.html',
   styleUrls: ['./medicos.css']
 })
@@ -16,9 +16,20 @@ export class MedicosComponent implements OnInit {
   filtro = '';
   editando = false;
   medicoSeleccionado: any = null;
-  form = { nombre: '', apellido: '', dni: '', especialidad: null as any, telefono: '', email: '', descripcionCorta: '' };
 
-  constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
+  medicoForm: FormGroup;
+
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
+    this.medicoForm = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
+      especialidad: [null, Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern('^9[0-9]{8}$')]],
+      email: ['', [Validators.required, Validators.email]],
+      descripcionCorta: ['']
+    });
+  }
 
   ngOnInit() {
     this.cargarDatos();
@@ -38,15 +49,30 @@ export class MedicosComponent implements OnInit {
     );
   }
 
-  prepararNuevo() { this.editando = false; this.form = { nombre: '', apellido: '', dni: '', especialidad: null, telefono: '', email: '', descripcionCorta: '' }; }
-  prepararEditar(m: any) { this.editando = true; this.medicoSeleccionado = m; this.form = { ...m }; }
-  prepararEliminar(m: any) { this.medicoSeleccionado = m; }
+  prepararNuevo() {
+    this.editando = false;
+    this.medicoForm.reset();
+  }
+
+  prepararEditar(m: any) {
+    this.editando = true;
+    this.medicoSeleccionado = m;
+    this.medicoForm.patchValue(m);
+  }
+
+  prepararEliminar(m: any) {
+    this.medicoSeleccionado = m;
+  }
 
   guardar() {
+    if (this.medicoForm.invalid) return;
+
+    const datosGuardar = this.medicoForm.value;
+
     if (this.editando && this.medicoSeleccionado) {
-      this.api.updateDoctor(this.medicoSeleccionado.idDoctor, this.form).subscribe(() => this.cargarDatos());
+      this.api.updateDoctor(this.medicoSeleccionado.idDoctor, datosGuardar).subscribe(() => this.cargarDatos());
     } else {
-      this.api.createDoctor(this.form).subscribe(() => this.cargarDatos());
+      this.api.createDoctor(datosGuardar).subscribe(() => this.cargarDatos());
     }
   }
 
