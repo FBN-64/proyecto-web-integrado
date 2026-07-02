@@ -15,7 +15,7 @@
     <div class="stats-grid">
       <a routerLink="/dashboard/citas" class="stat-card accent-blue"><span>Citas registradas</span><strong>{{ totalCitas }}</strong><small>{{ citasConfirmadas }} confirmadas</small></a>
       <a routerLink="/dashboard/pacientes" class="stat-card accent-green"><span>Pacientes</span><strong>{{ totalPacientes }}</strong><small>Base activa de atencion</small></a>
-      <a routerLink="/dashboard/pagos" class="stat-card accent-purple"><span>Ingresos</span><strong>S/ {{ ingresosTotales | number:'1.2-2' }}</strong><small>{{ totalPagos }} pagos registrados</small></a>
+      <a routerLink="/dashboard/pagos" class="stat-card accent-purple"><span>Ingresos</span><strong>{{ ingresosTotales | currency:'PEN':'S/ ' }}</strong><small>{{ totalPagos }} pagos registrados</small></a>
       <a routerLink="/dashboard/mensajes" class="stat-card accent-red"><span>Mensajes pendientes</span><strong>{{ mensajesPendientes }}</strong><small>{{ totalMensajes }} mensajes totales</small></a>
     </div>
 
@@ -35,7 +35,7 @@
           <div><span>Doctores</span><strong>{{ totalDoctores }}</strong></div>
           <div><span>Especialidades</span><strong>{{ totalEspecialidades }}</strong></div>
           <div><span>Horarios</span><strong>{{ totalHorarios }}</strong></div>
-          <div><span>Ticket promedio</span><strong>S/ {{ ticketPromedio | number:'1.2-2' }}</strong></div>
+          <div><span>Ticket promedio</span><strong>{{ ticketPromedio | currency:'PEN':'S/ ' }}</strong></div>
         </div>
       </section>
     </div>
@@ -45,7 +45,13 @@
         <div class="panel-header"><div><h2>Proximas citas</h2><p>Agenda ordenada por fecha y hora</p></div><a routerLink="/dashboard/citas">Ver citas</a></div>
         <div class="table-wrap" *ngIf="proximasCitas.length; else sinCitas">
           <table><thead><tr><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Doctor</th><th>Estado</th></tr></thead><tbody>
-            <tr *ngFor="let cita of proximasCitas"><td>{{ cita.fechaCita | date:'dd/MM/yyyy' }}</td><td>{{ cita.horaInicio }}</td><td>{{ nombrePaciente(cita) }}</td><td>{{ nombreDoctor(cita) }}</td><td><span class="pill">{{ cita.estado || 'sin estado' }}</span></td></tr>
+            <tr *ngFor="let cita of proximasCitas">
+              <td>{{ cita.fechaCita | date:'dd/MM/yyyy' }}</td>
+              <td>{{ cita.horaInicio }}</td>
+              <td>{{ nombrePaciente(cita) | titlecase }}</td>
+              <td>{{ nombreDoctor(cita) | titlecase }}</td>
+              <td><span class="pill">{{ (cita.estado || 'sin estado') | uppercase }}</span></td>
+            </tr>
           </tbody></table>
         </div>
         <ng-template #sinCitas><div class="empty">No hay citas proximas registradas.</div></ng-template>
@@ -53,19 +59,43 @@
 
       <section class="panel side-panel">
         <div class="panel-header"><div><h2>Especialidades con mas doctores</h2><p>Cobertura medica disponible</p></div></div>
-        <div class="rank-list"><div class="rank-item" *ngFor="let item of topEspecialidades; let i = index"><span>{{ i + 1 }}</span><div><strong>{{ item.nombre }}</strong><small>{{ item.total }} doctores</small></div></div></div>
+        <div class="rank-list">
+          <div class="rank-item" *ngFor="let item of topEspecialidades; let i = index">
+            <span>{{ i + 1 }}</span>
+            <div>
+              <strong>{{ item.nombre | uppercase }}</strong>
+              <small>{{ item.total }} doctores</small>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
 
     <div class="content-grid bottom-grid">
       <section class="panel">
         <div class="panel-header"><div><h2>Pagos recientes</h2><p>Ultimos movimientos de caja</p></div><a routerLink="/dashboard/pagos">Ver pagos</a></div>
-        <div class="activity-list"><div class="activity-item" *ngFor="let pago of pagosRecientes"><div><strong>S/ {{ pago.monto | number:'1.2-2' }}</strong><span>{{ pago.metodoPago || 'Metodo no indicado' }}</span></div><small>{{ pago.fechaPago | date:'dd/MM/yyyy HH:mm' }}</small></div></div>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let pago of pagosRecientes">
+            <div>
+              <strong>{{ pago.monto | currency:'PEN':'S/ ' }}</strong>
+              <span>{{ (pago.metodoPago || 'Metodo no indicado') | uppercase }}</span>
+            </div>
+            <small>{{ pago.fechaPago | date:'dd/MM/yyyy HH:mm' }}</small>
+          </div>
+        </div>
       </section>
 
       <section class="panel">
         <div class="panel-header"><div><h2>Mensajes recientes</h2><p>Solicitudes llegadas desde contacto</p></div><a routerLink="/dashboard/mensajes">Ver mensajes</a></div>
-        <div class="activity-list"><div class="activity-item" *ngFor="let mensaje of mensajesRecientes" [class.unread]="!mensaje.leido"><div><strong>{{ mensaje.nombreCompleto || 'Sin nombre' }}</strong><span>{{ mensaje.motivoConsulta || 'Consulta general' }}</span></div><small>{{ mensaje.fechaRecibido | date:'dd/MM/yyyy HH:mm' }}</small></div></div>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let mensaje of mensajesRecientes" [class.unread]="!mensaje.leido">
+            <div>
+              <strong>{{ (mensaje.nombreCompleto || 'Sin nombre') | titlecase }}</strong>
+              <span>{{ (mensaje.motivoConsulta || 'Consulta general') | titlecase }}</span>
+            </div>
+            <small>{{ mensaje.fechaRecibido | date:'dd/MM/yyyy HH:mm' }}</small>
+          </div>
+        </div>
       </section>
     </div>
   </ng-container>
