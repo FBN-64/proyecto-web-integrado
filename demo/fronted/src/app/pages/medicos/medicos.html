@@ -28,12 +28,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let m of medicosFiltrados">
-          <td>{{ m.nombre }}</td>
-          <td>{{ m.apellido }}</td>
+          <td><strong>{{ m.nombre | titlecase }}</strong></td>
+          <td>{{ m.apellido | titlecase }}</td>
           <td><span class="badge-gray">{{ m.dni }}</span></td>
-          <td><span class="badge-blue">{{ m.especialidad?.nombre }}</span></td>
+          <td><span class="badge-blue">{{ m.especialidad?.nombre | uppercase }}</span></td>
           <td>{{ m.telefono }}</td>
-          <td>{{ m.email }}</td>
+          <td style="color: #7f8c8d;">{{ m.email | lowercase }}</td>
           <td class="actions">
             <button class="btn-edit" data-bs-toggle="modal" data-bs-target="#modalMedico" (click)="prepararEditar(m)">✏️</button>
             <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(m)">🗑️</button>
@@ -47,7 +47,6 @@
   </div>
 </div>
 
-<!-- Modal Agregar/Editar -->
 <div class="modal fade" id="modalMedico" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-custom">
@@ -100,7 +99,6 @@
   </div>
 </div>
 
-<!-- Modal Confirmar Eliminar -->
 <div class="modal fade" id="modalConfirm" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-custom">

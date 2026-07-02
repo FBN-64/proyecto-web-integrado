@@ -1,4 +1,3 @@
-<!-- citas.html -->
 <div class="page-content">
   <div class="page-header">
     <div>
@@ -29,13 +28,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let c of citasFiltradas">
-          <td>{{ c.paciente?.nombre }} {{ c.paciente?.apellido }}</td>
-          <td>{{ c.doctor?.nombre }} {{ c.doctor?.apellido }}</td>
-          <td><span class="badge-blue">{{ c.doctor?.especialidad?.nombre }}</span></td>
-          <td>{{ c.fechaCita }}</td>
+          <td><strong>{{ c.paciente?.nombre | titlecase }} {{ c.paciente?.apellido | titlecase }}</strong></td>
+          <td>{{ c.doctor?.nombre | titlecase }} {{ c.doctor?.apellido | titlecase }}</td>
+          <td><span class="badge-blue">{{ c.doctor?.especialidad?.nombre | uppercase }}</span></td>
+          <td>{{ c.fechaCita | date:'dd/MM/yyyy' }}</td>
           <td>{{ c.horaInicio }}</td>
           <td>
-            <span [ngClass]="badgeEstado(c.estado)">{{ c.estado }}</span>
+            <span [ngClass]="badgeEstado(c.estado)">{{ (c.estado || 'Pendiente') | uppercase }}</span>
           </td>
           <td class="actions">
             <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(c)">🗑️</button>
@@ -49,7 +48,6 @@
   </div>
 </div>
 
-<!-- Modal Nueva Cita -->
 <div class="modal fade" id="modalCita" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-custom">
@@ -99,7 +97,6 @@
   </div>
 </div>
 
-<!-- Modal Confirmar -->
 <div class="modal fade" id="modalConfirm" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-custom">
