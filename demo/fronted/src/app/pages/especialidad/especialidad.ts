@@ -1,53 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../../services/api.services';
 
 @Component({
   selector: 'app-especialidad',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './especialidad.html',
   styleUrls: ['./especialidad.css']
 })
-export class EspecialidadComponent {
-  filtro = '';
-  especialidadAEliminar: any = null;
+export class EspecialidadComponent implements OnInit {
+  especialidades: any[] = [];
+  especialidadesMostradas: any[] = [];
+  especialidadSeleccionada: any = null;
   especialidadForm: FormGroup;
-  nuevaEspecialidad: string = '';
-  especialidades = [
-    { nombre: 'Cirugía de Cabeza, Cuello y Maxilofacial' }, { nombre: 'Gastroenterología' },
-    { nombre: 'Medicina Interna' }, { nombre: 'Traumatología' }
-  ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.especialidadForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]]
     });
   }
 
-  // BUSCADOR BLINDADO
-  get especialidadesFiltradas() {
-    if (!this.especialidades) return [];
-    const f = (this.filtro || '').toLowerCase();
-    return this.especialidades.filter(e =>
+  ngOnInit() { this.cargarDatos(); }
+
+  cargarDatos() {
+    this.api.getEspecialidades().subscribe(e => {
+      this.especialidades = e;
+      this.especialidadesMostradas = e;
+      this.cdr.detectChanges();
+    });
+  }
+
+  filtrar(event: any) {
+    const f = (event.target.value || '').toLowerCase();
+    this.especialidadesMostradas = this.especialidades.filter(e =>
       (e?.nombre || '').toLowerCase().includes(f)
     );
   }
 
-  agregarEspecialidad() {
-    if (this.especialidadForm.valid) {
-      const nom = this.especialidadForm.get('nombre')?.value;
-      this.especialidades.push({ nombre: nom.trim() });
+  guardar() {
+    if (this.especialidadForm.invalid) return;
+    this.api.createEspecialidad(this.especialidadForm.value).subscribe(() => {
+      this.cargarDatos();
       this.especialidadForm.reset();
-    }
+    });
   }
 
-  prepararEliminar(especialidad: any) { this.especialidadAEliminar = especialidad; }
+  prepararEliminar(e: any) { this.especialidadSeleccionada = e; }
 
   confirmarEliminar() {
-    if (this.especialidadAEliminar) {
-      this.especialidades = this.especialidades.filter(e => e !== this.especialidadAEliminar);
-      this.especialidadAEliminar = null;
+    if (this.especialidadSeleccionada) {
+      this.api.deleteEspecialidad(this.especialidadSeleccionada.idEspecialidad).subscribe(() => this.cargarDatos());
     }
   }
 }
