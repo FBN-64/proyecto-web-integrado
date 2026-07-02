@@ -1,72 +1,49 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-especialidad',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Importante para *ngFor y [(ngModel)]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './especialidad.html',
   styleUrls: ['./especialidad.css']
 })
 export class EspecialidadComponent {
-  // Conectado al buscador
-  filtro: string = '';
-  
-  // Para agregar y eliminar
-  nuevaEspecialidad: string = '';
+  filtro = '';
   especialidadAEliminar: any = null;
+  especialidadForm: FormGroup;
 
-  // Tu lista de especialidades
   especialidades = [
-    { nombre: 'Cirugía de Cabeza, Cuello y Maxilofacial' },
-    { nombre: 'Gastroenterología' },
-    { nombre: 'Medicina Interna' },
-    { nombre: 'Traumatología' },
-    { nombre: 'Cardiología' },
-    { nombre: 'Terapia Física' },
-    { nombre: 'Anatomía Patológica' },
-    { nombre: 'Medicina General' },
-    { nombre: 'Ginecología' },
-    { nombre: 'Cirugía General' },
-    { nombre: 'Urología' },
-    { nombre: 'Psicología' },
-    { nombre: 'Otorrinolaringología' },
-    { nombre: 'Nutrición' },
-    { nombre: 'Reumatología' },
-    { nombre: 'Pediatría' },
-    { nombre: 'Oftalmología' },
-    { nombre: 'Endocrinología' },
-    { nombre: 'Obstetricia' },
-    { nombre: 'Anestesiología' },
-    { nombre: 'Neurología' },
-    { nombre: 'Odontología' },
-    { nombre: 'Cirugía de Tórax y Cardiovascular' },
-    { nombre: 'Cirugía Oncológica' },
-    { nombre: 'Medicina Física' }
+    { nombre: 'Cirugía de Cabeza, Cuello y Maxilofacial' }, { nombre: 'Gastroenterología' },
+    { nombre: 'Medicina Interna' }, { nombre: 'Traumatología' }
   ];
 
-  // Filtra la lista en tiempo real
+  constructor(private fb: FormBuilder) {
+    this.especialidadForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]]
+    });
+  }
+
+  // BUSCADOR BLINDADO
   get especialidadesFiltradas() {
+    if (!this.especialidades) return [];
+    const f = (this.filtro || '').toLowerCase();
     return this.especialidades.filter(e =>
-      e.nombre.toLowerCase().includes(this.filtro.toLowerCase())
+      (e?.nombre || '').toLowerCase().includes(f)
     );
   }
 
-  // Agrega una nueva a la lista
   agregarEspecialidad() {
-    if (this.nuevaEspecialidad.trim()) {
-      this.especialidades.push({ nombre: this.nuevaEspecialidad.trim() });
-      this.nuevaEspecialidad = ''; // Limpia el input
+    if (this.especialidadForm.valid) {
+      const nom = this.especialidadForm.get('nombre')?.value;
+      this.especialidades.push({ nombre: nom.trim() });
+      this.especialidadForm.reset();
     }
   }
 
-  // Prepara la eliminación
-  prepararEliminar(especialidad: any) {
-    this.especialidadAEliminar = especialidad;
-  }
+  prepararEliminar(especialidad: any) { this.especialidadAEliminar = especialidad; }
 
-  // Elimina definitivamente
   confirmarEliminar() {
     if (this.especialidadAEliminar) {
       this.especialidades = this.especialidades.filter(e => e !== this.especialidadAEliminar);

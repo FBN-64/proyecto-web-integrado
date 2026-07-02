@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api.services';
 
 @Component({
   selector: 'app-pacientes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './Pacientes.html',
   styleUrls: ['./Pacientes.css']
 })
@@ -15,32 +15,47 @@ export class PacientesComponent implements OnInit {
   filtro = '';
   editando = false;
   pacienteSeleccionado: any = null;
-  form = { nombre: '', apellido: '', apellidoMaterno: '', dni: '', genero: '', fechaNacimiento: '', telefono: '', email: '' };
+  pacienteForm: FormGroup;
 
-  constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
+    this.pacienteForm = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      apellidoMaterno: [''],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
+      genero: ['', Validators.required],
+      fechaNacimiento: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern('^9[0-9]{8}$')]],
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
 
   ngOnInit() { this.cargarDatos(); }
 
   cargarDatos() { this.api.getPacientes().subscribe(p => { this.pacientes = p; this.cdr.detectChanges(); }); }
 
+  // BUSCADOR BLINDADO
   get pacientesFiltrados() {
-    const f = this.filtro.toLowerCase();
+    if (!this.pacientes) return [];
+    const f = (this.filtro || '').toLowerCase();
     return this.pacientes.filter(p =>
-      p.nombre?.toLowerCase().includes(f) ||
-      p.apellido?.toLowerCase().includes(f) ||
-      p.dni?.toLowerCase().includes(f)
+      (p?.nombre || '').toLowerCase().includes(f) ||
+      (p?.apellido || '').toLowerCase().includes(f) ||
+      (p?.dni || '').toLowerCase().includes(f)
     );
   }
 
-  prepararNuevo() { this.editando = false; this.form = { nombre: '', apellido: '', apellidoMaterno: '', dni: '', genero: '', fechaNacimiento: '', telefono: '', email: '' }; }
-  prepararEditar(p: any) { this.editando = true; this.pacienteSeleccionado = p; this.form = { ...p }; }
+  prepararNuevo() { this.editando = false; this.pacienteForm.reset({ genero: '' }); }
+  prepararEditar(p: any) { this.editando = true; this.pacienteSeleccionado = p; this.pacienteForm.patchValue(p); }
   prepararEliminar(p: any) { this.pacienteSeleccionado = p; }
 
   guardar() {
+    if (this.pacienteForm.invalid) return;
+    const datos = this.pacienteForm.value;
     if (this.editando && this.pacienteSeleccionado) {
-      this.api.updatePaciente(this.pacienteSeleccionado.idPaciente, this.form).subscribe(() => this.cargarDatos());
+      this.api.updatePaciente(this.pacienteSeleccionado.idPaciente, datos).subscribe(() => this.cargarDatos());
     } else {
-      this.api.createPaciente(this.form).subscribe(() => this.cargarDatos());
+      this.api.createPaciente(datos).subscribe(() => this.cargarDatos());
     }
   }
 

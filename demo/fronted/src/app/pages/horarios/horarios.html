@@ -10,9 +10,9 @@
   </div>
 
   <div class="search-bar">
-    <select [(ngModel)]="doctorSeleccionado" (change)="filtrarPorDoctor()">
-      <option [ngValue]="null">Todos los doctores</option>
-      <option *ngFor="let d of doctores" [ngValue]="d">{{ d.nombre }} {{ d.apellido }}</option>
+    <select [(ngModel)]="doctorFiltro" class="form-select w-auto">
+      <option value="null">Todos los doctores</option>
+      <option *ngFor="let d of doctores" [value]="d.idDoctor">{{ d.nombre }} {{ d.apellido }}</option>
     </select>
   </div>
 
@@ -31,20 +31,21 @@
       <tbody>
         <tr *ngFor="let h of horariosMostrados">
           <td>{{ h.doctor?.nombre | titlecase }} {{ h.doctor?.apellido | titlecase }}</td>
-          
+
           <td><span class="badge-blue">{{ h.doctor?.especialidad?.nombre | uppercase }}</span></td>
-          
+
           <td>
-            <span class="badge-gray" 
-                  [ngStyle]="{'color': (h.diaSemana === 'Sábado' || h.diaSemana === 'Domingo') ? '#e74c3c' : 'inherit', 'font-weight': 'bold'}">
+            <span class="badge-gray"
+              [ngStyle]="{'color': (h.diaSemana === 'Sábado' || h.diaSemana === 'Domingo') ? '#e74c3c' : 'inherit', 'font-weight': 'bold'}">
               {{ h.diaSemana | uppercase }}
             </span>
           </td>
-          
+
           <td><strong>{{ h.horaInicio }}</strong></td>
           <td><strong>{{ h.horaFin }}</strong></td>
           <td class="actions">
-            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(h)">🗑️</button>
+            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm"
+              (click)="prepararEliminar(h)">🗑️</button>
           </td>
         </tr>
         <tr *ngIf="horariosMostrados.length === 0">
