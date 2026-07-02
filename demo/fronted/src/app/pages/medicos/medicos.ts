@@ -18,6 +18,7 @@ export class MedicosComponent implements OnInit {
   editando = false;
   medicoSeleccionado: any = null;
   medicoForm: FormGroup;
+  form: any = {};
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.medicoForm = this.fb.group({

@@ -16,6 +16,7 @@ export class PacientesComponent implements OnInit {
   editando = false;
   pacienteSeleccionado: any = null;
   pacienteForm: FormGroup;
+  form: any = {};
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.pacienteForm = this.fb.group({

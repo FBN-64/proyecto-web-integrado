@@ -18,6 +18,8 @@ export class HorariosComponent implements OnInit {
   horarioSeleccionado: any = null;
   dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   horarioForm: FormGroup;
+  form: any = {};
+  horariosMostrados: any[] = [];
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.horarioForm = this.fb.group({

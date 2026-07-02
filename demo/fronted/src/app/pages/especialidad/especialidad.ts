@@ -13,7 +13,7 @@ export class EspecialidadComponent {
   filtro = '';
   especialidadAEliminar: any = null;
   especialidadForm: FormGroup;
-
+  nuevaEspecialidad: string = '';
   especialidades = [
     { nombre: 'Cirugía de Cabeza, Cuello y Maxilofacial' }, { nombre: 'Gastroenterología' },
     { nombre: 'Medicina Interna' }, { nombre: 'Traumatología' }

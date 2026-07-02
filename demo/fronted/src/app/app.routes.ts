@@ -6,7 +6,7 @@ import { ResumenComponent } from './pages/resumen/resumen';
 import { MedicosComponent } from './pages/medicos/medicos';
 import { EspecialidadComponent } from './pages/especialidad/especialidad';
 import { HorariosComponent } from './pages/horarios/horarios';
-import { Citas } from './pages/citas/citas';
+import { CitasComponent } from './pages/citas/citas';
 import { PacientesComponent } from './pages/pacientes/Pacientes';
 import { PagosComponent } from './pages/pagos/Pagos';
 import { MensajesComponent } from './pages/mensajes/Mensajes';
@@ -30,7 +30,7 @@ export const routes: Routes = [
       { path: 'medicos', component: MedicosComponent },
       { path: 'especialidad', component: EspecialidadComponent },
       { path: 'horarios', component: HorariosComponent },
-      { path: 'citas', component: Citas },
+      { path: 'citas', component: CitasComponent },
       { path: 'pacientes', component: PacientesComponent },
       { path: 'pagos', component: PagosComponent },
       { path: 'mensajes', component: MensajesComponent },

@@ -17,6 +17,7 @@ export class CitasComponent implements OnInit {
   filtro = '';
   citaSeleccionada: any = null;
   citaForm: FormGroup;
+  form: any = {};
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.citaForm = this.fb.group({
