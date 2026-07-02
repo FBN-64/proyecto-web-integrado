@@ -10,7 +10,8 @@
   </div>
 
   <div class="search-bar">
-    <input type="text" placeholder="🔍 Buscar por nombre o especialidad..." [(ngModel)]="filtro" />
+    <!-- Se agregó (ngModelChange) para la búsqueda en tiempo real -->
+    <input type="text" placeholder="🔍 Buscar por nombre o especialidad..." [(ngModel)]="filtro" (ngModelChange)="aplicarFiltro()" />
   </div>
 
   <div class="table-card">
@@ -27,7 +28,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let m of medicosFiltrados">
+        <!-- Iteramos sobre la lista segura -->
+        <tr *ngFor="let m of medicosMostrados">
           <td><strong>{{ m.nombre | titlecase }}</strong></td>
           <td>{{ m.apellido | titlecase }}</td>
           <td><span class="badge-gray">{{ m.dni }}</span></td>
@@ -39,7 +41,7 @@
             <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(m)">🗑️</button>
           </td>
         </tr>
-        <tr *ngIf="medicosFiltrados.length === 0">
+        <tr *ngIf="medicosMostrados.length === 0">
           <td colspan="7" class="empty">No se encontraron médicos</td>
         </tr>
       </tbody>
@@ -47,51 +49,56 @@
   </div>
 </div>
 
+<!-- MODAL CONECTADO A REACTIVE FORMS -->
 <div class="modal fade" id="modalMedico" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-custom">
       <div class="modal-header-custom">
         <h5>{{ editando ? 'Editar Médico' : 'Agregar Médico' }}</h5>
-        <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
+        <button type="button" id="btn-cerrar-modal" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
       </div>
-      <div class="modal-body-custom">
+
+      <!-- Envolvemos todo el formulario -->
+      <div class="modal-body-custom" [formGroup]="medicoForm">
         <div class="form-grid">
           <div class="form-group">
             <label>Nombre *</label>
-            <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre" />
+            <!-- Reemplazamos [(ngModel)] por formControlName -->
+            <input type="text" formControlName="nombre" placeholder="Nombre" />
           </div>
           <div class="form-group">
             <label>Apellido *</label>
-            <input type="text" [(ngModel)]="form.apellido" placeholder="Apellido" />
+            <input type="text" formControlName="apellido" placeholder="Apellido" />
           </div>
           <div class="form-group">
-            <label>DNI</label>
-            <input type="text" [(ngModel)]="form.dni" placeholder="DNI" />
+            <label>DNI *</label>
+            <input type="text" formControlName="dni" placeholder="DNI" />
           </div>
           <div class="form-group">
             <label>Especialidad *</label>
-            <select [(ngModel)]="form.especialidad">
+            <select formControlName="especialidad">
               <option [ngValue]="null" disabled>Seleccione...</option>
               <option *ngFor="let e of especialidades" [ngValue]="e">{{ e.nombre }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Teléfono</label>
-            <input type="text" [(ngModel)]="form.telefono" placeholder="Teléfono" />
+            <label>Teléfono *</label>
+            <input type="text" formControlName="telefono" placeholder="Teléfono" />
           </div>
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" [(ngModel)]="form.email" placeholder="Email" />
+            <label>Email *</label>
+            <input type="email" formControlName="email" placeholder="Email" />
           </div>
           <div class="form-group full-width">
             <label>Descripción corta</label>
-            <input type="text" [(ngModel)]="form.descripcionCorta" placeholder="Breve descripción" />
+            <input type="text" formControlName="descripcionCorta" placeholder="Breve descripción" />
           </div>
         </div>
       </div>
       <div class="modal-footer-custom">
         <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()">
+        <!-- Quitamos el data-bs-dismiss de aquí para que la validación manual funcione primero -->
+        <button class="btn-save" (click)="guardar()">
           {{ editando ? 'Actualizar' : 'Guardar' }}
         </button>
       </div>

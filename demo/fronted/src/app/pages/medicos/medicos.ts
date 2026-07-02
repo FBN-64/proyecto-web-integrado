@@ -1,24 +1,23 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// IMPORTAMOS AMBOS MÓDULOS AQUÍ
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../services/api.services';
 
 @Component({
   selector: 'app-medicos',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule], // INYECTADOS AQUÍ
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './medicos.html',
   styleUrls: ['./medicos.css']
 })
 export class MedicosComponent implements OnInit {
   medicos: any[] = [];
+  medicosMostrados: any[] = []; // <-- Lista visual que evita el congelamiento
   especialidades: any[] = [];
   filtro = '';
   editando = false;
   medicoSeleccionado: any = null;
-  medicoForm: FormGroup;
-  form: any = {};
+  medicoForm: FormGroup; // <-- Formulario estricto (Miembro 3)
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.medicoForm = this.fb.group({
@@ -38,31 +37,64 @@ export class MedicosComponent implements OnInit {
   }
 
   cargarDatos() {
-    this.api.getDoctores().subscribe(d => { this.medicos = d; this.cdr.detectChanges(); });
+    this.api.getDoctores().subscribe(d => {
+      this.medicos = d;
+      this.aplicarFiltro(); // Sincroniza la tabla al cargar
+      this.cdr.detectChanges();
+    });
   }
 
-  // BUSCADOR BLINDADO
-  get medicosFiltrados() {
-    if (!this.medicos) return [];
+  // BUSCADOR INMUNE A CAMBIOS DE PESTAÑA
+  aplicarFiltro() {
     const f = (this.filtro || '').toLowerCase();
-    return this.medicos.filter(m =>
+    this.medicosMostrados = this.medicos.filter(m =>
       (m?.nombre || '').toLowerCase().includes(f) ||
       (m?.apellido || '').toLowerCase().includes(f) ||
       (m?.especialidad?.nombre || '').toLowerCase().includes(f)
     );
   }
 
-  prepararNuevo() { this.editando = false; this.medicoForm.reset(); }
-  prepararEditar(m: any) { this.editando = true; this.medicoSeleccionado = m; this.medicoForm.patchValue(m); }
+  prepararNuevo() {
+    this.editando = false;
+    this.medicoForm.reset(); // Limpia el formulario reactivo
+  }
+
+  prepararEditar(m: any) {
+    this.editando = true;
+    this.medicoSeleccionado = m;
+    // Llena el modal con los datos exactos del médico
+    this.medicoForm.patchValue({
+      nombre: m.nombre,
+      apellido: m.apellido,
+      dni: m.dni,
+      especialidad: m.especialidad,
+      telefono: m.telefono,
+      email: m.email,
+      descripcionCorta: m.descripcionCorta
+    });
+  }
+
   prepararEliminar(m: any) { this.medicoSeleccionado = m; }
 
   guardar() {
-    if (this.medicoForm.invalid) return;
+    // El muro: Si faltan datos, avisa y no hace nada
+    if (this.medicoForm.invalid) {
+      alert("Por favor, llena todos los campos obligatorios correctamente.");
+      return;
+    }
+
     const datosGuardar = this.medicoForm.value;
+
     if (this.editando && this.medicoSeleccionado) {
-      this.api.updateDoctor(this.medicoSeleccionado.idDoctor, datosGuardar).subscribe(() => this.cargarDatos());
+      this.api.updateDoctor(this.medicoSeleccionado.idDoctor, datosGuardar).subscribe(() => {
+        this.cargarDatos();
+        document.getElementById('btn-cerrar-modal')?.click(); // Cierra el modal
+      });
     } else {
-      this.api.createDoctor(datosGuardar).subscribe(() => this.cargarDatos());
+      this.api.createDoctor(datosGuardar).subscribe(() => {
+        this.cargarDatos();
+        document.getElementById('btn-cerrar-modal')?.click(); // Cierra el modal
+      });
     }
   }
 
