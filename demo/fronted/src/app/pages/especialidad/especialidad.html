@@ -22,8 +22,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let especialidad of especialidadesFiltradas">
-        <td>{{ especialidad.nombre }}</td>
+    <tr *ngFor="let especialidad of especialidadesFiltradas">
+        <td><strong>{{ especialidad.nombre | uppercase }}</strong></td>
         <td class="text-center">
           <button
             class="btn btn-danger btn-sm"
@@ -35,9 +35,7 @@
           </button>
         </td>
       </tr>
-      <tr *ngIf="especialidadesFiltradas.length === 0">
-        <td colspan="2" class="text-center text-muted">No se encontraron especialidades...</td>
-      </tr>
+      
     </tbody>
   </table>
 </div>

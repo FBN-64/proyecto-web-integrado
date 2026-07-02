@@ -1,4 +1,3 @@
-<!-- pacientes.html -->
 <div class="page-content">
   <div class="page-header">
     <div>
@@ -29,12 +28,21 @@
       </thead>
       <tbody>
         <tr *ngFor="let p of pacientesFiltrados">
-          <td>{{ p.nombre }}</td>
-          <td>{{ p.apellido }}</td>
+          <td><strong>{{ p.nombre | titlecase }}</strong></td>
+          <td>{{ p.apellido | titlecase }}</td>
           <td><span class="badge-gray">{{ p.dni }}</span></td>
-          <td>{{ p.genero }}</td>
+          
+          <td>
+            <span [ngStyle]="{
+              'color': p.genero === 'Masculino' ? '#2980b9' : (p.genero === 'Femenino' ? '#e84393' : '#8e44ad'),
+              'font-weight': '600'
+            }">
+              {{ p.genero | titlecase }}
+            </span>
+          </td>
+          
           <td>{{ p.telefono }}</td>
-          <td>{{ p.email }}</td>
+          <td style="color: #7f8c8d;">{{ p.email | lowercase }}</td>
           <td class="actions">
             <button class="btn-edit" data-bs-toggle="modal" data-bs-target="#modalPaciente" (click)="prepararEditar(p)">✏️</button>
             <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(p)">🗑️</button>
@@ -48,7 +56,6 @@
   </div>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="modalPaciente" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-custom">
@@ -105,7 +112,6 @@
   </div>
 </div>
 
-<!-- Confirmar eliminar -->
 <div class="modal fade" id="modalConfirm" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-custom">
