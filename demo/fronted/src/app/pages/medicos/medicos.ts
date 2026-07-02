@@ -7,7 +7,7 @@ import { ApiService } from '../../services/api.services';
   selector: 'app-medicos',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './Medicos.html',
+  templateUrl: './medicos.html',
   styleUrls: ['./medicos.css']
 })
 export class MedicosComponent implements OnInit {
@@ -18,6 +18,10 @@ export class MedicosComponent implements OnInit {
   medicoSeleccionado: any = null;
 
   medicoForm: FormGroup;
+
+  actualizarFiltro(event: any) {
+    this.filtro = event.target.value;
+  }
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.medicoForm = this.fb.group({

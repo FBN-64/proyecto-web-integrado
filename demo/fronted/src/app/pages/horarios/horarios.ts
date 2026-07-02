@@ -7,8 +7,8 @@ import { ApiService } from '../../services/api.services';
   selector: 'app-horarios',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './Horarios.html',
-  styleUrls: ['./Horarios.css']
+  templateUrl: './horarios.html',
+  styleUrls: ['./horarios.css']
 })
 export class HorariosComponent implements OnInit {
   horarios: any[] = [];

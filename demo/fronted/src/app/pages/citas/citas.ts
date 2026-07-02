@@ -7,7 +7,7 @@ import { ApiService } from '../../services/api.services';
   selector: 'app-citas',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './Citas.html',
+  templateUrl: './citas.html',
   styleUrls: ['./citas.css']
 })
 export class CitasComponent implements OnInit {
