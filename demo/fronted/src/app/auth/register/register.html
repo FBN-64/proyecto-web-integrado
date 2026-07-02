@@ -2,29 +2,56 @@
   <div class="register-card">
     <h1 class="register-title">REGISTER</h1>
 
-    <div class="input-group">
-      <label>Full Name</label>
-      <input type="text" placeholder="Enter your full name">
+    <!-- Mensaje de error general si el backend rechaza el registro (ej. Usuario ya existe) -->
+    <div *ngIf="errorMsg" style="color: #dc2626; font-size: 14px; font-weight: 600; margin-bottom: 20px;">
+      {{ errorMsg }}
     </div>
 
-    <div class="input-group">
-      <label>Username</label>
-      <input type="text" placeholder="Choose a username">
-    </div>
+    <!-- Envolvemos tus inputs en el form group -->
+    <form [formGroup]="registerForm" (ngSubmit)="registrar()">
 
-    <div class="input-group">
-      <label>Password</label>
-      <input type="password" placeholder="Create password">
-    </div>
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" formControlName="username" placeholder="Choose a username">
+        <!-- Alerta de validación adaptada al estilo de tu input -->
+        <small *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+               style="color: #dc2626; font-size: 12px; margin-left: 15px; margin-top: 5px; display: block;">
+          El usuario es obligatorio
+        </small>
+      </div>
 
-    <div class="button-group">
-      <button type="button" class="btn-secondary" routerLink="/login">
-        Login
-      </button>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="Enter your email">
+        <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+               style="color: #dc2626; font-size: 12px; margin-left: 15px; margin-top: 5px; display: block;">
+          Ingresa un correo válido
+        </small>
+      </div>
 
-      <button type="submit" class="btn-primary" [routerLink]="['/dashboard']">
-        Crear usuario
-      </button>
-    </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Create password">
+        <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+               style="color: #dc2626; font-size: 12px; margin-left: 15px; margin-top: 5px; display: block;">
+          Debe tener al menos 4 caracteres
+        </small>
+      </div>
+
+      <div class="button-group">
+        <!-- Botón de Login (Se mantiene igual) -->
+        <button type="button" class="btn-secondary" routerLink="/login">
+          Login
+        </button>
+
+        <!-- Botón de Envío (Bloqueado visual y lógicamente si el formulario tiene errores) -->
+        <button type="submit" class="btn-primary"
+                [disabled]="registerForm.invalid"
+                [ngStyle]="{'opacity': registerForm.valid ? '1' : '0.5', 'cursor': registerForm.valid ? 'pointer' : 'not-allowed'}">
+          Crear usuario
+        </button>
+      </div>
+
+    </form>
   </div>
 </div>
