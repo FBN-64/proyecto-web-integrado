@@ -31,7 +31,7 @@
           <td><strong>{{ p.nombre | titlecase }}</strong></td>
           <td>{{ p.apellido | titlecase }}</td>
           <td><span class="badge-gray">{{ p.dni }}</span></td>
-          
+
           <td>
             <span [ngStyle]="{
               'color': p.genero === 'Masculino' ? '#2980b9' : (p.genero === 'Femenino' ? '#e84393' : '#8e44ad'),
@@ -40,12 +40,14 @@
               {{ p.genero | titlecase }}
             </span>
           </td>
-          
+
           <td>{{ p.telefono }}</td>
           <td style="color: #7f8c8d;">{{ p.email | lowercase }}</td>
           <td class="actions">
-            <button class="btn-edit" data-bs-toggle="modal" data-bs-target="#modalPaciente" (click)="prepararEditar(p)">✏️</button>
-            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(p)">🗑️</button>
+            <button class="btn-edit" data-bs-toggle="modal" data-bs-target="#modalPaciente"
+              (click)="prepararEditar(p)">✏️</button>
+            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm"
+              (click)="prepararEliminar(p)">🗑️</button>
           </td>
         </tr>
         <tr *ngIf="pacientesFiltrados.length === 0">
@@ -64,26 +66,26 @@
         <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
       </div>
       <div class="modal-body-custom">
-        <div class="form-grid">
+        <form [formGroup]="pacienteForm" class="form-grid">
           <div class="form-group">
             <label>Nombre *</label>
-            <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre" />
+            <input type="text" formControlName="nombre" placeholder="Nombre" />
           </div>
           <div class="form-group">
             <label>Apellido *</label>
-            <input type="text" [(ngModel)]="form.apellido" placeholder="Apellido" />
+            <input type="text" formControlName="apellido" placeholder="Apellido" />
           </div>
           <div class="form-group">
             <label>Apellido Materno</label>
-            <input type="text" [(ngModel)]="form.apellidoMaterno" placeholder="Apellido materno" />
+            <input type="text" formControlName="apellidoMaterno" placeholder="Apellido materno" />
           </div>
           <div class="form-group">
             <label>DNI *</label>
-            <input type="text" [(ngModel)]="form.dni" placeholder="DNI" />
+            <input type="text" formControlName="dni" placeholder="DNI" />
           </div>
           <div class="form-group">
-            <label>Género</label>
-            <select [(ngModel)]="form.genero">
+            <label>Género *</label>
+            <select formControlName="genero">
               <option value="">Seleccione...</option>
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
@@ -91,22 +93,24 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Fecha de Nacimiento</label>
-            <input type="date" [(ngModel)]="form.fechaNacimiento" />
+            <label>Fecha de Nacimiento *</label>
+            <input type="date" formControlName="fechaNacimiento" />
           </div>
           <div class="form-group">
-            <label>Teléfono</label>
-            <input type="text" [(ngModel)]="form.telefono" placeholder="Teléfono" />
+            <label>Teléfono *</label>
+            <input type="text" formControlName="telefono" placeholder="Teléfono" />
           </div>
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" [(ngModel)]="form.email" placeholder="Email" />
+            <label>Email *</label>
+            <input type="email" formControlName="email" placeholder="Email" />
           </div>
-        </div>
+        </form>
       </div>
       <div class="modal-footer-custom">
         <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()" [disabled]="pacienteForm.invalid">
+          {{ editando ? 'Actualizar' : 'Guardar' }}
+        </button>
       </div>
     </div>
   </div>

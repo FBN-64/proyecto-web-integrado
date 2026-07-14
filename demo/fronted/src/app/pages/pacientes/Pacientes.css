@@ -237,3 +237,10 @@
   cursor: pointer;
   font-family: inherit;
 }
+
+.btn-save:disabled {
+  background-color: #a0aec0; /* Un tono grisáceo */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

@@ -20,9 +20,9 @@ export class PacientesComponent implements OnInit {
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.pacienteForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      apellidoMaterno: [''],
+      nombre: ['', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
+      apellido: ['', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
+      apellidoMaterno: ['', [Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$')]], // Es opcional, pero si escribe, deben ser letras
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       genero: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
