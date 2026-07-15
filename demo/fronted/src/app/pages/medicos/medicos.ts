@@ -21,8 +21,9 @@ export class MedicosComponent implements OnInit {
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
     this.medicoForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
+      // Se agregan los Validators.pattern para forzar solo letras
+      nombre: ['', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
+      apellido: ['', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       especialidad: [null, Validators.required],
       telefono: ['', [Validators.required, Validators.pattern('^9[0-9]{8}$')]],
@@ -78,10 +79,7 @@ export class MedicosComponent implements OnInit {
 
   guardar() {
     // El muro: Si faltan datos, avisa y no hace nada
-    if (this.medicoForm.invalid) {
-      alert("Por favor, llena todos los campos obligatorios correctamente.");
-      return;
-    }
+    if (this.medicoForm.invalid) return;
 
     const datosGuardar = this.medicoForm.value;
 

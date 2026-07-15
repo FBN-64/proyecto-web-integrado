@@ -97,8 +97,7 @@
       </div>
       <div class="modal-footer-custom">
         <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
-        <!-- Quitamos el data-bs-dismiss de aquí para que la validación manual funcione primero -->
-        <button class="btn-save" (click)="guardar()">
+        <button class="btn-save" (click)="guardar()" [disabled]="medicoForm.invalid">
           {{ editando ? 'Actualizar' : 'Guardar' }}
         </button>
       </div>
