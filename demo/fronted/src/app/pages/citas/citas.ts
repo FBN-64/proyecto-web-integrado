@@ -66,6 +66,12 @@ export class CitasComponent implements OnInit {
     this.api.createCita(this.citaForm.value).subscribe(() => this.cargarDatos());
   }
 
+  aplicarFiltro() {
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 10)
+  }
+
   confirmarEliminar() {
     if (this.citaSeleccionada) {
       this.api.deleteCita(this.citaSeleccionada.idCita).subscribe(() => this.cargarDatos());

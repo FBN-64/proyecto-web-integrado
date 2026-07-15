@@ -57,6 +57,12 @@ export class HorariosComponent implements OnInit {
     this.api.createHorario(this.horarioForm.value).subscribe(() => this.cargarDatos());
   }
 
+  aplicarFiltro() {
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 10)
+  }
+
   confirmarEliminar() {
     if (this.horarioSeleccionado) {
       this.api.deleteHorario(this.horarioSeleccionado.idHorario).subscribe(() => this.cargarDatos());

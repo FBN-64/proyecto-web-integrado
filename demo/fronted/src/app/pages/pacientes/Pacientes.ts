@@ -60,6 +60,12 @@ export class PacientesComponent implements OnInit {
     }
   }
 
+  aplicarFiltro() {
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 10)
+  }
+
   confirmarEliminar() {
     if (this.pacienteSeleccionado) {
       this.api.deletePaciente(this.pacienteSeleccionado.idPaciente).subscribe(() => this.cargarDatos());

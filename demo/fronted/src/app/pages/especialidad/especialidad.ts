@@ -47,6 +47,12 @@ export class EspecialidadComponent implements OnInit {
     });
   }
 
+  aplicarFiltro() {
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 10)
+  }
+
   prepararEliminar(e: any) { this.especialidadSeleccionada = e; }
 
   confirmarEliminar() {
