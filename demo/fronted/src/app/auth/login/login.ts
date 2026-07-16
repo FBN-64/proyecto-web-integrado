@@ -8,8 +8,8 @@ import { ApiService } from '../../services/api.services';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './Login.html',
-  styleUrls: ['./Login.css']
+  templateUrl: './login.html',
+  styleUrls: ['./login.css']
 })
 export class LoginComponent {
   username = '';

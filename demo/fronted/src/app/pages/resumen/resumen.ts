@@ -8,8 +8,8 @@ import { ApiService } from '../../services/api.services';
   selector: 'app-resumen',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './Resumen.html',
-  styleUrls: ['./Resumen.css']
+  templateUrl: './resumen.html',
+  styleUrls: ['./resumen.css']
 })
 export class ResumenComponent implements OnInit {
   totalDoctores = 0;

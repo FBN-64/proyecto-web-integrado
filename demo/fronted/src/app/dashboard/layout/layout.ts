@@ -6,8 +6,8 @@ import { ApiService } from '../../services/api.services';
   selector: 'app-layout',
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
-  templateUrl: './Layout.html',
-  styleUrl: './Layout.css',
+  templateUrl: './layout.html',
+  styleUrl: './layout.css',
 })
 export class LayoutComponent {
   constructor(private api: ApiService, private router: Router) {}
