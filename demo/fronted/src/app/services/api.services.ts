@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private base = 'http://localhost:8080/api';
+  private base = 'https://api-madre-zoraida.onrender.com/api';
   private options = { withCredentials: true };
 
   constructor(private http: HttpClient) {}
