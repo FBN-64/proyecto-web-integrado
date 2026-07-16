@@ -63,31 +63,59 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Nombre *</label>
-            <!-- Reemplazamos [(ngModel)] por formControlName -->
-            <input type="text" formControlName="nombre" placeholder="Nombre" />
+            <input type="text" formControlName="nombre" placeholder="Nombre"
+                   [ngClass]="{'is-invalid': medicoForm.get('nombre')?.invalid && (medicoForm.get('nombre')?.dirty || medicoForm.get('nombre')?.touched)}" />
+            <div class="error-message" *ngIf="medicoForm.get('nombre')?.invalid && (medicoForm.get('nombre')?.dirty || medicoForm.get('nombre')?.touched)">
+              <span *ngIf="medicoForm.get('nombre')?.hasError('required')">El nombre es obligatorio.</span>
+              <span *ngIf="medicoForm.get('nombre')?.hasError('pattern')">Ingrese solo letras.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>Apellido *</label>
-            <input type="text" formControlName="apellido" placeholder="Apellido" />
+            <input type="text" formControlName="apellido" placeholder="Apellido"
+                   [ngClass]="{'is-invalid': medicoForm.get('apellido')?.invalid && (medicoForm.get('apellido')?.dirty || medicoForm.get('apellido')?.touched)}" />
+            <div class="error-message" *ngIf="medicoForm.get('apellido')?.invalid && (medicoForm.get('apellido')?.dirty || medicoForm.get('apellido')?.touched)">
+              <span *ngIf="medicoForm.get('apellido')?.hasError('required')">El apellido es obligatorio.</span>
+              <span *ngIf="medicoForm.get('apellido')?.hasError('pattern')">Ingrese solo letras.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>DNI *</label>
-            <input type="text" formControlName="dni" placeholder="DNI" />
+            <input type="text" formControlName="dni" placeholder="DNI"
+                   [ngClass]="{'is-invalid': medicoForm.get('dni')?.invalid && (medicoForm.get('dni')?.dirty || medicoForm.get('dni')?.touched)}" />
+            <div class="error-message" *ngIf="medicoForm.get('dni')?.invalid && (medicoForm.get('dni')?.dirty || medicoForm.get('dni')?.touched)">
+              <span *ngIf="medicoForm.get('dni')?.hasError('required')">El DNI es obligatorio.</span>
+              <span *ngIf="medicoForm.get('dni')?.hasError('pattern')">Debe tener exactamente 8 números.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>Especialidad *</label>
-            <select formControlName="especialidad">
+            <select formControlName="especialidad"
+                    [ngClass]="{'is-invalid': medicoForm.get('especialidad')?.invalid && (medicoForm.get('especialidad')?.dirty || medicoForm.get('especialidad')?.touched)}">
               <option [ngValue]="null" disabled>Seleccione...</option>
               <option *ngFor="let e of especialidades" [ngValue]="e">{{ e.nombre }}</option>
             </select>
+            <div class="error-message" *ngIf="medicoForm.get('especialidad')?.invalid && (medicoForm.get('especialidad')?.dirty || medicoForm.get('especialidad')?.touched)">
+              <span *ngIf="medicoForm.get('especialidad')?.hasError('required')">Seleccione una especialidad.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>Teléfono *</label>
-            <input type="text" formControlName="telefono" placeholder="Teléfono" />
+            <input type="text" formControlName="telefono" placeholder="Teléfono"
+                   [ngClass]="{'is-invalid': medicoForm.get('telefono')?.invalid && (medicoForm.get('telefono')?.dirty || medicoForm.get('telefono')?.touched)}" />
+            <div class="error-message" *ngIf="medicoForm.get('telefono')?.invalid && (medicoForm.get('telefono')?.dirty || medicoForm.get('telefono')?.touched)">
+              <span *ngIf="medicoForm.get('telefono')?.hasError('required')">El teléfono es obligatorio.</span>
+              <span *ngIf="medicoForm.get('telefono')?.hasError('pattern')">Debe tener 9 números y empezar con 9.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>Email *</label>
-            <input type="email" formControlName="email" placeholder="Email" />
+            <input type="email" formControlName="email" placeholder="Email"
+                   [ngClass]="{'is-invalid': medicoForm.get('email')?.invalid && (medicoForm.get('email')?.dirty || medicoForm.get('email')?.touched)}" />
+            <div class="error-message" *ngIf="medicoForm.get('email')?.invalid && (medicoForm.get('email')?.dirty || medicoForm.get('email')?.touched)">
+              <span *ngIf="medicoForm.get('email')?.hasError('required')">El email es obligatorio.</span>
+              <span *ngIf="medicoForm.get('email')?.hasError('email')">Ingrese un correo electrónico válido.</span>
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Descripción corta</label>
