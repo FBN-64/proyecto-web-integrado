@@ -13,11 +13,11 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:4200")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                // Dentro de tu CorsConfig.java
+                registry.addMapping("/**")
+                        .allowedOrigins("*") // Permite cualquier URL (o pon aquí la URL de Vercel cuando la tengas)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*");
             }
         };
     }
