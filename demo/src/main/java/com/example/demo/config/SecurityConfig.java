@@ -25,17 +25,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE) // Prioridad máxima para el filtro CORS
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        
-        config.setAllowCredentials(true);
-        // Usamos patrones para aceptar CUALQUIER URL de Vercel (la que tiene letras aleatorias y la estable)
-        config.setAllowedOriginPatterns(List.of("*")); 
+
+        // Permitir todo temporalmente para descartar el bloqueo
+        config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        
+        config.setAllowCredentials(true);
+
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
