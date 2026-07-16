@@ -10,7 +10,8 @@
   </div>
 
   <div class="search-bar">
-    <input type="text" placeholder="🔍 Buscar por nombre o DNI..." [(ngModel)]="filtro" />
+    <input type="text" placeholder="🔍 Buscar por nombre o DNI..." [(ngModel)]="filtro"
+      (ngModelChange)="aplicarFiltro()" />
   </div>
 
   <div class="table-card">
@@ -31,7 +32,7 @@
           <td><strong>{{ p.nombre | titlecase }}</strong></td>
           <td>{{ p.apellido | titlecase }}</td>
           <td><span class="badge-gray">{{ p.dni }}</span></td>
-          
+
           <td>
             <span [ngStyle]="{
               'color': p.genero === 'Masculino' ? '#2980b9' : (p.genero === 'Femenino' ? '#e84393' : '#8e44ad'),
@@ -40,12 +41,14 @@
               {{ p.genero | titlecase }}
             </span>
           </td>
-          
+
           <td>{{ p.telefono }}</td>
           <td style="color: #7f8c8d;">{{ p.email | lowercase }}</td>
           <td class="actions">
-            <button class="btn-edit" data-bs-toggle="modal" data-bs-target="#modalPaciente" (click)="prepararEditar(p)">✏️</button>
-            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(p)">🗑️</button>
+            <button class="btn-edit" data-bs-toggle="modal" data-bs-target="#modalPaciente"
+              (click)="prepararEditar(p)">✏️</button>
+            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm"
+              (click)="prepararEliminar(p)">🗑️</button>
           </td>
         </tr>
         <tr *ngIf="pacientesFiltrados.length === 0">
@@ -64,49 +67,88 @@
         <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
       </div>
       <div class="modal-body-custom">
-        <div class="form-grid">
+        <form [formGroup]="pacienteForm" class="form-grid">
           <div class="form-group">
             <label>Nombre *</label>
-            <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre" />
+            <input type="text" formControlName="nombre" placeholder="Nombre"
+                   [ngClass]="{'is-invalid': pacienteForm.get('nombre')?.invalid && (pacienteForm.get('nombre')?.dirty || pacienteForm.get('nombre')?.touched)}" />
+            <div class="error-message" *ngIf="pacienteForm.get('nombre')?.invalid && (pacienteForm.get('nombre')?.dirty || pacienteForm.get('nombre')?.touched)">
+              <span *ngIf="pacienteForm.get('nombre')?.hasError('required')">El nombre es obligatorio.</span>
+              <span *ngIf="pacienteForm.get('nombre')?.hasError('pattern')">Ingrese solo letras.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>Apellido *</label>
-            <input type="text" [(ngModel)]="form.apellido" placeholder="Apellido" />
+            <input type="text" formControlName="apellido" placeholder="Apellido"
+                   [ngClass]="{'is-invalid': pacienteForm.get('apellido')?.invalid && (pacienteForm.get('apellido')?.dirty || pacienteForm.get('apellido')?.touched)}" />
+            <div class="error-message" *ngIf="pacienteForm.get('apellido')?.invalid && (pacienteForm.get('apellido')?.dirty || pacienteForm.get('apellido')?.touched)">
+              <span *ngIf="pacienteForm.get('apellido')?.hasError('required')">El apellido es obligatorio.</span>
+              <span *ngIf="pacienteForm.get('apellido')?.hasError('pattern')">Ingrese solo letras.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>Apellido Materno</label>
-            <input type="text" [(ngModel)]="form.apellidoMaterno" placeholder="Apellido materno" />
+            <input type="text" formControlName="apellidoMaterno" placeholder="Apellido materno"
+                   [ngClass]="{'is-invalid': pacienteForm.get('apellidoMaterno')?.invalid && (pacienteForm.get('apellidoMaterno')?.dirty || pacienteForm.get('apellidoMaterno')?.touched)}" />
+            <div class="error-message" *ngIf="pacienteForm.get('apellidoMaterno')?.invalid && (pacienteForm.get('apellidoMaterno')?.dirty || pacienteForm.get('apellidoMaterno')?.touched)">
+              <span *ngIf="pacienteForm.get('apellidoMaterno')?.hasError('pattern')">Ingrese solo letras.</span>
+            </div>
           </div>
           <div class="form-group">
             <label>DNI *</label>
-            <input type="text" [(ngModel)]="form.dni" placeholder="DNI" />
+            <input type="text" formControlName="dni" placeholder="DNI"
+                   [ngClass]="{'is-invalid': pacienteForm.get('dni')?.invalid && (pacienteForm.get('dni')?.dirty || pacienteForm.get('dni')?.touched)}" />
+            <div class="error-message" *ngIf="pacienteForm.get('dni')?.invalid && (pacienteForm.get('dni')?.dirty || pacienteForm.get('dni')?.touched)">
+              <span *ngIf="pacienteForm.get('dni')?.hasError('required')">El DNI es obligatorio.</span>
+              <span *ngIf="pacienteForm.get('dni')?.hasError('pattern')">Debe tener exactamente 8 números.</span>
+            </div>
           </div>
           <div class="form-group">
-            <label>Género</label>
-            <select [(ngModel)]="form.genero">
+            <label>Género *</label>
+            <select formControlName="genero"
+                    [ngClass]="{'is-invalid': pacienteForm.get('genero')?.invalid && (pacienteForm.get('genero')?.dirty || pacienteForm.get('genero')?.touched)}">
               <option value="">Seleccione...</option>
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
               <option value="Otro">Otro</option>
             </select>
+            <div class="error-message" *ngIf="pacienteForm.get('genero')?.invalid && (pacienteForm.get('genero')?.dirty || pacienteForm.get('genero')?.touched)">
+              <span *ngIf="pacienteForm.get('genero')?.hasError('required')">Seleccione un género.</span>
+            </div>
           </div>
           <div class="form-group">
-            <label>Fecha de Nacimiento</label>
-            <input type="date" [(ngModel)]="form.fechaNacimiento" />
+            <label>Fecha de Nacimiento *</label>
+            <input type="date" formControlName="fechaNacimiento"
+                   [ngClass]="{'is-invalid': pacienteForm.get('fechaNacimiento')?.invalid && (pacienteForm.get('fechaNacimiento')?.dirty || pacienteForm.get('fechaNacimiento')?.touched)}" />
+            <div class="error-message" *ngIf="pacienteForm.get('fechaNacimiento')?.invalid && (pacienteForm.get('fechaNacimiento')?.dirty || pacienteForm.get('fechaNacimiento')?.touched)">
+              <span *ngIf="pacienteForm.get('fechaNacimiento')?.hasError('required')">La fecha es obligatoria.</span>
+            </div>
           </div>
           <div class="form-group">
-            <label>Teléfono</label>
-            <input type="text" [(ngModel)]="form.telefono" placeholder="Teléfono" />
+            <label>Teléfono *</label>
+            <input type="text" formControlName="telefono" placeholder="Teléfono"
+                   [ngClass]="{'is-invalid': pacienteForm.get('telefono')?.invalid && (pacienteForm.get('telefono')?.dirty || pacienteForm.get('telefono')?.touched)}" />
+            <div class="error-message" *ngIf="pacienteForm.get('telefono')?.invalid && (pacienteForm.get('telefono')?.dirty || pacienteForm.get('telefono')?.touched)">
+              <span *ngIf="pacienteForm.get('telefono')?.hasError('required')">El teléfono es obligatorio.</span>
+              <span *ngIf="pacienteForm.get('telefono')?.hasError('pattern')">Debe tener 9 números y empezar con 9.</span>
+            </div>
           </div>
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" [(ngModel)]="form.email" placeholder="Email" />
+            <label>Email *</label>
+            <input type="email" formControlName="email" placeholder="Email"
+                   [ngClass]="{'is-invalid': pacienteForm.get('email')?.invalid && (pacienteForm.get('email')?.dirty || pacienteForm.get('email')?.touched)}" />
+            <div class="error-message" *ngIf="pacienteForm.get('email')?.invalid && (pacienteForm.get('email')?.dirty || pacienteForm.get('email')?.touched)">
+              <span *ngIf="pacienteForm.get('email')?.hasError('required')">El email es obligatorio.</span>
+              <span *ngIf="pacienteForm.get('email')?.hasError('email')">Ingrese un correo válido.</span>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
       <div class="modal-footer-custom">
         <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()" [disabled]="pacienteForm.invalid">
+          {{ editando ? 'Actualizar' : 'Guardar' }}
+        </button>
       </div>
     </div>
   </div>

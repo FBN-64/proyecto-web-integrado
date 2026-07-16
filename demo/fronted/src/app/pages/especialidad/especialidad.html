@@ -5,7 +5,7 @@
     type="text"
     class="form-control mb-3"
     placeholder="🔍 Buscar especialidad..."
-    [(ngModel)]="filtro"
+    (input)="filtrar($event)"
   />
 
   <div class="mb-3">
@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let especialidad of especialidadesFiltradas">
+    <tr *ngFor="let especialidad of especialidadesMostradas">
         <td><strong>{{ especialidad.nombre | uppercase }}</strong></td>
         <td class="text-center">
           <button
@@ -35,7 +35,7 @@
           </button>
         </td>
       </tr>
-      
+
     </tbody>
   </table>
 </div>
@@ -43,7 +43,7 @@
 <div class="modal fade" id="agregarEspecialidadModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form (ngSubmit)="agregarEspecialidad()">
+      <form [formGroup]="especialidadForm" (ngSubmit)="guardar()">
         <div class="modal-header bg-primary text-white">
           <h5 class="modal-title">Agregar Especialidad</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -51,7 +51,7 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Nombre de la Especialidad</label>
-            <input type="text" class="form-control" name="nombre" [(ngModel)]="nuevaEspecialidad" required placeholder="Ej. Dermatología" />
+            <input type="text" class="form-control" name="nombre" formControlName="nombre" required placeholder="Ej. Dermatología" />
           </div>
         </div>
         <div class="modal-footer">

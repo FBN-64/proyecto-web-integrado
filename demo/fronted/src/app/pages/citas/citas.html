@@ -10,7 +10,8 @@
   </div>
 
   <div class="search-bar">
-    <input type="text" placeholder="🔍 Buscar paciente o doctor..." [(ngModel)]="filtro" />
+    <input type="text" placeholder="🔍 Buscar paciente o doctor..." [(ngModel)]="filtro"
+      (ngModelChange)="aplicarFiltro()" />
   </div>
 
   <div class="table-card">
@@ -37,7 +38,8 @@
             <span [ngClass]="badgeEstado(c.estado)">{{ (c.estado || 'Pendiente') | uppercase }}</span>
           </td>
           <td class="actions">
-            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm" (click)="prepararEliminar(c)">🗑️</button>
+            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#modalConfirm"
+              (click)="prepararEliminar(c)">🗑️</button>
           </td>
         </tr>
         <tr *ngIf="citasFiltradas.length === 0">
@@ -56,42 +58,44 @@
         <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
       </div>
       <div class="modal-body-custom">
-        <div class="form-grid">
+        <form [formGroup]="citaForm" class="form-grid">
           <div class="form-group">
             <label>Paciente *</label>
-            <select [(ngModel)]="form.paciente">
+            <select formControlName="paciente">
               <option [ngValue]="null" disabled>Seleccione...</option>
               <option *ngFor="let p of pacientes" [ngValue]="p">{{ p.nombre }} {{ p.apellido }}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Doctor *</label>
-            <select [(ngModel)]="form.doctor">
+            <select formControlName="doctor">
               <option [ngValue]="null" disabled>Seleccione...</option>
               <option *ngFor="let d of doctores" [ngValue]="d">{{ d.nombre }} {{ d.apellido }}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Fecha *</label>
-            <input type="date" [(ngModel)]="form.fechaCita" />
+            <input type="date" formControlName="fechaCita" />
           </div>
           <div class="form-group">
             <label>Hora *</label>
-            <input type="time" [(ngModel)]="form.horaInicio" />
+            <input type="time" formControlName="horaInicio" />
           </div>
           <div class="form-group full-width">
             <label>Estado</label>
-            <select [(ngModel)]="form.estado">
+            <select formControlName="estado">
               <option value="confirmada">Confirmada</option>
               <option value="pendiente">Pendiente</option>
               <option value="cancelada">Cancelada</option>
             </select>
           </div>
-        </div>
+        </form>
       </div>
       <div class="modal-footer-custom">
         <button class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()">Guardar</button>
+        <button class="btn-save" data-bs-dismiss="modal" (click)="guardar()" [disabled]="citaForm.invalid">
+          Guardar
+        </button>
       </div>
     </div>
   </div>

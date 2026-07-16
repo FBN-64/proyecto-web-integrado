@@ -1,76 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../../services/api.services';
 
 @Component({
   selector: 'app-especialidad',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Importante para *ngFor y [(ngModel)]
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './especialidad.html',
   styleUrls: ['./especialidad.css']
 })
-export class EspecialidadComponent {
-  // Conectado al buscador
-  filtro: string = '';
-  
-  // Para agregar y eliminar
-  nuevaEspecialidad: string = '';
-  especialidadAEliminar: any = null;
+export class EspecialidadComponent implements OnInit {
+  especialidades: any[] = [];
+  especialidadesMostradas: any[] = [];
+  especialidadSeleccionada: any = null;
+  especialidadForm: FormGroup;
 
-  // Tu lista de especialidades
-  especialidades = [
-    { nombre: 'Cirugía de Cabeza, Cuello y Maxilofacial' },
-    { nombre: 'Gastroenterología' },
-    { nombre: 'Medicina Interna' },
-    { nombre: 'Traumatología' },
-    { nombre: 'Cardiología' },
-    { nombre: 'Terapia Física' },
-    { nombre: 'Anatomía Patológica' },
-    { nombre: 'Medicina General' },
-    { nombre: 'Ginecología' },
-    { nombre: 'Cirugía General' },
-    { nombre: 'Urología' },
-    { nombre: 'Psicología' },
-    { nombre: 'Otorrinolaringología' },
-    { nombre: 'Nutrición' },
-    { nombre: 'Reumatología' },
-    { nombre: 'Pediatría' },
-    { nombre: 'Oftalmología' },
-    { nombre: 'Endocrinología' },
-    { nombre: 'Obstetricia' },
-    { nombre: 'Anestesiología' },
-    { nombre: 'Neurología' },
-    { nombre: 'Odontología' },
-    { nombre: 'Cirugía de Tórax y Cardiovascular' },
-    { nombre: 'Cirugía Oncológica' },
-    { nombre: 'Medicina Física' }
-  ];
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef, private fb: FormBuilder) {
+    this.especialidadForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]]
+    });
+  }
 
-  // Filtra la lista en tiempo real
-  get especialidadesFiltradas() {
-    return this.especialidades.filter(e =>
-      e.nombre.toLowerCase().includes(this.filtro.toLowerCase())
+  ngOnInit() { this.cargarDatos(); }
+
+  cargarDatos() {
+    this.api.getEspecialidades().subscribe(e => {
+      this.especialidades = e;
+      this.especialidadesMostradas = e;
+      this.cdr.detectChanges();
+    });
+  }
+
+  filtrar(event: any) {
+    const f = (event.target.value || '').toLowerCase();
+    this.especialidadesMostradas = this.especialidades.filter(e =>
+      (e?.nombre || '').toLowerCase().includes(f)
     );
   }
 
-  // Agrega una nueva a la lista
-  agregarEspecialidad() {
-    if (this.nuevaEspecialidad.trim()) {
-      this.especialidades.push({ nombre: this.nuevaEspecialidad.trim() });
-      this.nuevaEspecialidad = ''; // Limpia el input
-    }
+  guardar() {
+    if (this.especialidadForm.invalid) return;
+    this.api.createEspecialidad(this.especialidadForm.value).subscribe(() => {
+      this.cargarDatos();
+      this.especialidadForm.reset();
+    });
   }
 
-  // Prepara la eliminación
-  prepararEliminar(especialidad: any) {
-    this.especialidadAEliminar = especialidad;
+  aplicarFiltro() {
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 10)
   }
 
-  // Elimina definitivamente
+  prepararEliminar(e: any) { this.especialidadSeleccionada = e; }
+
   confirmarEliminar() {
-    if (this.especialidadAEliminar) {
-      this.especialidades = this.especialidades.filter(e => e !== this.especialidadAEliminar);
-      this.especialidadAEliminar = null;
+    if (this.especialidadSeleccionada) {
+      this.api.deleteEspecialidad(this.especialidadSeleccionada.idEspecialidad).subscribe(() => this.cargarDatos());
     }
   }
 }

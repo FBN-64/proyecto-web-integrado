@@ -237,3 +237,30 @@
   cursor: pointer;
   font-family: inherit;
 }
+
+.btn-save:disabled {
+  background-color: #a0aec0; /* Un tono grisáceo */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Estilos para las validaciones en tiempo real */
+.error-message {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: block;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.is-invalid {
+  border-color: #dc2626 !important;
+  background-color: #fffafb;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}

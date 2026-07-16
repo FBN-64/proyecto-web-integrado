@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+// IMPORTANTE: Importamos el PasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +28,37 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UsuarioRepository usuarioRepository;
+    // 1. Agregamos el PasswordEncoder
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(AuthenticationManager authenticationManager, UsuarioRepository usuarioRepository) {
+    // 2. Lo inyectamos en el constructor
+    public AuthController(AuthenticationManager authenticationManager, 
+                          UsuarioRepository usuarioRepository,
+                          PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    // 3. NUEVO ENDPOINT DE REGISTRO
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        if (usuarioRepository.findByNombreUsuario(request.username()).isPresent()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "El nombre de usuario ya está en uso"));
+        }
+
+        Usuario nuevoUsuario = new Usuario();
+        nuevoUsuario.setNombreUsuario(request.username());
+        nuevoUsuario.setEmail(request.email());
+        
+        // Encriptar la contraseña antes de guardarla
+        nuevoUsuario.setPassword(passwordEncoder.encode(request.password()));
+        
+        // Asignar el rol admin por defecto
+        nuevoUsuario.setRol(Usuario.Rol.admin);
+
+        usuarioRepository.save(nuevoUsuario);
+        return ResponseEntity.ok(Map.of("message", "Usuario registrado exitosamente"));
     }
 
     @PostMapping("/login")
@@ -85,5 +114,9 @@ public class AuthController {
     }
 
     public record LoginRequest(String username, String password) {}
+    
+    // 4. NUEVO RECORD PARA EL REGISTRO
+    public record RegisterRequest(String username, String email, String password) {}
+    
     public record AuthResponse(Integer idUsuario, String nombreUsuario, String email, String rol) {}
 }

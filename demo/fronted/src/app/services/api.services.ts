@@ -13,6 +13,10 @@ export class ApiService {
     return this.http.post(`${this.base}/auth/login`, { username, password }, this.options);
   }
 
+  register(datos: any): Observable<any> {
+    return this.http.post(`${this.base}/auth/register`, datos, this.options);
+  }
+
   me(): Observable<any> {
     return this.http.get(`${this.base}/auth/me`, this.options);
   }
