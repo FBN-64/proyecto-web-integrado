@@ -1,5 +1,5 @@
 # Usamos una imagen oficial de Java 17
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:21-jdk-jammy
 
 # Establecemos el directorio de trabajo dentro del servidor
 WORKDIR /app
